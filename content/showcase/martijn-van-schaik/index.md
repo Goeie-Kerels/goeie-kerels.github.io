@@ -1,5 +1,5 @@
 ---
-title: "Martijn van Schaijk"
+title: "Martijn van Schaik"
 vertical: true
 image: "/images/showcase/martijn-van-schaijk.jpg"
 description: "Founder van Intractief B.V."

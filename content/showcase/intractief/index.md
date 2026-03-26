@@ -4,7 +4,7 @@ description: "Slimme applicaties, handige koppelingen en doelgerichte websites. 
 image: "/images/showcase/intractief.jpg"
 video: "/videos/placeholders/video-1.webm"
 type: "company"
-members: ["Martijn van Schaijk", "Michael van de Giessen", "Wout van de Pol", "Bram van Heumen", "Roy Tersluijsen", "Rick Pennings"]
+members: ["Martijn van Schaik", "Michael van de Giessen", "Wout van de Pol", "Bram van Heumen", "Roy Tersluijsen", "Rick Pennings"]
 contact:
   email: "info@intractief.nl"
   phone: "0412-480038"
@@ -36,15 +36,15 @@ Met slimme applicaties, handige koppelingen en doelgerichte websites zorgen we v
 ::
 
 :::services-section{title="Wat wij doen"}
-::service-card{icon="⚙️" title="Maatwerk Applicaties"}
+::service-card{icon="gear" title="Maatwerk Applicaties"}
 Van idee tot werkende applicatie. Wij bouwen slimme, schaalbare webapplicaties die precies doen wat jouw organisatie nodig heeft.
 ::
 
-::service-card{icon="🔗" title="Koppelingen & Integraties"}
+::service-card{icon="link" title="Koppelingen & Integraties"}
 Systemen die met elkaar praten. Wij realiseren handige koppelingen tussen bestaande platformen, API's en maatwerksoftware.
 ::
 
-::service-card{icon="🌐" title="Doelgerichte Websites"}
+::service-card{icon="globe" title="Doelgerichte Websites"}
 Websites die converteren. Geen generieke templates, maar een online aanwezigheid die aansluit op jouw doelgroep en doelstellingen.
 ::
 :::

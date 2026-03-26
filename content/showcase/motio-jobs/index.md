@@ -35,19 +35,19 @@ Met meer dan 100 kandidaten die je al voorgingen en een 5-sterren waardering van
 ::
 
 :::services-section{title="Onze Diensten"}
-::service-card{icon="💼" title="Detachering IT & HR"}
+::service-card{icon="briefcase" title="Detachering IT & HR"}
 Motio Jobs is gespecialiseerd in het detacheren van HBO/WO-professionals binnen IT & Software en HR & Office. De juiste versterking, op het juiste moment.
 ::
 
-::service-card{icon="🔍" title="Werving & Selectie"}
+::service-card{icon="search" title="Werving & Selectie"}
 Op zoek naar een vaste aanwinst? Wij vinden de kandidaat die écht bij jouw organisatie past — van junior tot senior, van generalist tot specialist.
 ::
 
-::service-card{icon="🏭" title="Uitzenden"}
+::service-card{icon="factory" title="Uitzenden"}
 Voor uitvoerend personeel in meer dan 10 sectoren. Snel schakelen, betrouwbare kandidaten en wekelijkse uitbetaling voor flexwerkers.
 ::
 
-::service-card{icon="📊" title="HR Consulting"}
+::service-card{icon="chart" title="HR Consulting"}
 Deskundig advies en ondersteuning op het gebied van HR, employer branding, talent mapping en recruitment procesoptimalisatie.
 ::
 :::

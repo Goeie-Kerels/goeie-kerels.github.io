@@ -35,15 +35,15 @@ Reizend door heel het land reinigt Beer opritten, terrassen, looppaden, pleinen,
 ::
 
 :::services-section{title="Onze Diensten"}
-::service-card{icon="🧹" title="Oprit, Terras & Terrein"}
+::service-card{icon="broom" title="Oprit, Terras & Terrein"}
 Verwijder hardnekkig vuil, groene aanslag en onkruid van uw oprit of terras. Hogedruk reiniging, voegen herstellen en beschermlaag — langdurig resultaat gegarandeerd.
 ::
 
-::service-card{icon="🏠" title="Gevelreiniging"}
+::service-card{icon="house" title="Gevelreiniging"}
 Verwijder vuil en aanslag voor een frisse, nieuwe uitstraling van uw woning. Hogedruk reiniging, stoomreiniging en impregneren.
 ::
 
-::service-card{icon="🌿" title="Onkruidbeheersing"}
+::service-card{icon="leaf" title="Onkruidbeheersing"}
 Houd uw tuin en terras onkruidvrij met onze flexibele onderhoudsplannen. Preventief onderhoud, milieuvriendelijk en op maat.
 ::
 :::
@@ -53,5 +53,4 @@ Houd uw tuin en terras onkruidvrij met onze flexibele onderhoudsplannen. Prevent
 
 Bereschoon is actief in **Noord-Brabant en omstreken**. Wilt u weten of wij bij u in de buurt werken? Neem gerust contact op voor een vrijblijvende offerte — reactie binnen 24 uur.
 
-★★★★★ **4.9/5 op Google** — Tevreden klanten door heel Nederland.
 ::

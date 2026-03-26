@@ -8,9 +8,10 @@
 
 <style scoped>
 .content-section {
-  background-color: var(--white);
-  --section-text: #0f172a;
-  --section-primary: #0f172a;
+  background-color: var(--bg);
+  padding: var(--section-padding, 8rem) 0;
+  --section-text: var(--text);
+  --section-primary: var(--text);
   color: var(--section-text);
 }
 
@@ -22,7 +23,11 @@
 :deep(h3) {
   margin-top: 4rem;
   margin-bottom: 2rem;
-  color: var(--section-primary);
+  color: #fff;
+}
+
+:deep(strong) {
+  color: #fff;
 }
 
 :deep(ul) {

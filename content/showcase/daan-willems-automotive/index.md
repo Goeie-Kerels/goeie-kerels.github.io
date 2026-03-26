@@ -10,9 +10,9 @@ contact:
   phone: "06-12345678"
   whatsapp: true
   website: "https://daanwillemsautomotive.nl"
-  address: "Uden, Noord-Brabant"
-  lat: 51.6978162
-  lng: 5.3036748
+  address: "Goudenheuvel 13, 5234 GA 's-Hertogenbosch"
+  lat: 51.6889
+  lng: 5.3031
   socials:
     instagram: "https://instagram.com/daanwillemsautomotive"
     linkedin: "https://linkedin.com/company/daanwillemsautomotive"
@@ -35,15 +35,15 @@ Onze passie voor techniek en design ziet u terug in elke wagen die onze showroom
 ::
 
 :::services-section{title="Onze Diensten"}
-::service-card{icon="🚗" title="Inkoop & Verkoop"}
+::service-card{icon="car" title="Inkoop & Verkoop"}
 Wij kopen en verkopen zorgvuldig geselecteerde jong gebruikte occasions. Eerlijke prijzen, transparante informatie en geen verrassingen achteraf.
 ::
 
-::service-card{icon="🔎" title="Zoekopdracht op Maat"}
+::service-card{icon="search" title="Zoekopdracht op Maat"}
 Staat uw droomauto er niet tussen? Geef uw wensen door en wij zoeken gericht naar de auto die perfect bij u past.
 ::
 
-::service-card{icon="✨" title="Professionele Detailing"}
+::service-card{icon="sparkle" title="Professionele Detailing"}
 Van grondige reiniging tot volledige polijstbehandeling — wij zorgen dat uw auto er altijd op zijn best uitziet.
 ::
 :::
