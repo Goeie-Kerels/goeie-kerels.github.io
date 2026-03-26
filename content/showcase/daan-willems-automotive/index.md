@@ -7,7 +7,7 @@ type: "company"
 members: ["Daan Willems"]
 contact:
   email: "info@daanwillemsautomotive.nl"
-  phone: "06-12345678"
+  phone: "+31623182351"
   whatsapp: true
   website: "https://daanwillemsautomotive.nl"
   address: "Goudenheuvel 13, 5234 GA 's-Hertogenbosch"
@@ -24,7 +24,7 @@ tags: ["Automotive", "Occasions", "Detailing", "Exclusief"]
 Exclusieve occasions. Persoonlijke service.
 ::
 
-:business-card{name="Daan Willems Automotive" tagline="Specialist in exclusieve occasions — zorgvuldig geselecteerd" phone="06-12345678" email="info@daanwillemsautomotive.nl" website="https://daanwillemsautomotive.nl" address="Uden, Noord-Brabant" :whatsapp="true" instagram="https://instagram.com/daanwillemsautomotive" linkedin="https://linkedin.com/company/daanwillemsautomotive"}
+:business-card{name="Daan Willems Automotive" tagline="Specialist in exclusieve occasions — zorgvuldig geselecteerd" phone="+31623182351" email="info@daanwillemsautomotive.nl" website="https://daanwillemsautomotive.nl" address="Goudenheuvel 13, 5234 GA 's-Hertogenbosch" :whatsapp="true" instagram="https://instagram.com/daanwillemsautomotive" linkedin="https://linkedin.com/company/daanwillemsautomotive"}
 
 ::intro-section
 ## Exclusiviteit op wielen
