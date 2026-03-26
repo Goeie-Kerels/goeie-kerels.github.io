@@ -19,7 +19,7 @@ contact:
 tags: ["Reiniging", "Oprit", "Gevel", "Terras", "Milieubewust"]
 ---
 
-::hero-section{video="/videos/showcase/bereschoon.webm" :compact="true"}
+::hero-section{video="/videos/showcase/bereschoon.webm"}
 # Bereschoon
 Uitzonderlijke schoonmaak. Professioneel, efficiënt en milieubewust.
 ::

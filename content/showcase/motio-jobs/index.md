@@ -19,7 +19,7 @@ contact:
 tags: ["Recruitment", "IT", "HR", "Detachering", "Uitzenden"]
 ---
 
-::hero-section{image="/images/showcase/motio-jobs.jpg" :compact="true"}
+::hero-section{image="/images/showcase/motio-jobs.jpg"}
 # Motio Jobs
 Werk dat raakt. Groei die blijft.
 ::

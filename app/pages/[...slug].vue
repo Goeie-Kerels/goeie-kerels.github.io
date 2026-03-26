@@ -22,18 +22,14 @@ useSeoMeta({
   description: page.value.description,
   ogTitle: page.value.title,
   ogDescription: page.value.description,
-  ogImage: 'https://toffekerels.nl/og-image.png',
+  ogImage: 'https://toffekerels.nl/og-image-v2.png',
   ogImageWidth: '1200',
   ogImageHeight: '630',
   ogImageAlt: page.value.title ?? 'Toffe Kerels',
   twitterCard: 'summary_large_image',
-  twitterImage: 'https://toffekerels.nl/og-image.png'
+  twitterImage: 'https://toffekerels.nl/og-image-v2.png'
 })
 
-defineOgImage('Default', {
-  title: page.value.title,
-  description: page.value.description
-})
 </script>
 
 <template>

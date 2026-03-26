@@ -19,7 +19,7 @@ contact:
 tags: ["Automotive", "Occasions", "Detailing", "Exclusief"]
 ---
 
-::hero-section{video="/videos/showcase/daan-willems-automotive.webm" :compact="true"}
+::hero-section{video="/videos/showcase/daan-willems-automotive.webm"}
 # Daan Willems Automotive
 Exclusieve occasions. Persoonlijke service.
 ::

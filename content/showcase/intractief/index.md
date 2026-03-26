@@ -20,7 +20,7 @@ contact:
 tags: ["Development", "Applicaties", "Maatwerk", "Koppelingen", "Websites"]
 ---
 
-::hero-section{image="/images/showcase/intractief.jpg" :compact="true"}
+::hero-section{image="/images/showcase/intractief.jpg"}
 # Intractief
 Jouw ambitie, onze online oplossing.
 ::
