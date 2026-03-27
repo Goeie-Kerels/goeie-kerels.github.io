@@ -507,18 +507,25 @@ const visibleTags = computed(() => showAllTags.value ? allTags.value : allTags.v
 
 .card-media img.portrait,
 .card-media .card-video.portrait {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
   width: auto;
-  height: 100%;
+  height: 130%;
   max-width: 100%;
   object-fit: contain;
   object-position: center 15%;
 }
 
-.showcase-card:hover .card-media img,
-.showcase-card:hover .card-video {
+.showcase-card:hover .card-media img:not(.portrait),
+.showcase-card:hover .card-video:not(.portrait) {
   transform: scale(1.06);
+}
+
+.showcase-card:hover .card-media img.portrait,
+.showcase-card:hover .card-video.portrait {
+  transform: translateX(-50%) scale(1.06);
 }
 
 .showcase-card:hover .portrait-bg {
