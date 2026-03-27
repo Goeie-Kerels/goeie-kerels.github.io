@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n()
 
-type ModalPlan = 'company' | 'individual' | 'supporter' | 'general'
+type ModalPlan = 'company' | 'individual' | 'supporter' | 'supersponsor' | 'general'
 const modalOpen = ref(false)
 const modalPlan = ref<ModalPlan>('general')
 const quizOpen = ref(false)
@@ -40,6 +40,7 @@ function onQuizApply(plan: 'company' | 'individual' | 'supporter') {
             <span class="price-amount">{{ t('join.company.price') }}</span>
             <span class="price-period">{{ t('join.perYear') }}</span>
           </div>
+          <div class="price-tax">{{ t('join.inclTax') }}</div>
           <p class="pricing-desc">{{ t('join.company.desc') }}</p>
           <ul class="pricing-perks">
             <li>
@@ -74,6 +75,7 @@ function onQuizApply(plan: 'company' | 'individual' | 'supporter') {
             <span class="price-amount">{{ t('join.individual.price') }}</span>
             <span class="price-period">{{ t('join.perYear') }}</span>
           </div>
+          <div class="price-tax">{{ t('join.inclTax') }}</div>
           <p class="pricing-desc">{{ t('join.individual.desc') }}</p>
           <ul class="pricing-perks">
             <li>
@@ -110,6 +112,7 @@ function onQuizApply(plan: 'company' | 'individual' | 'supporter') {
             <span class="price-amount">{{ t('join.supporter.price') }}</span>
             <span class="price-period">{{ t('join.perYear') }}</span>
           </div>
+          <div class="price-tax">{{ t('join.inclTax') }}</div>
           <p class="pricing-desc">{{ t('join.supporter.desc') }}</p>
           <ul class="pricing-perks">
             <li>
@@ -206,7 +209,7 @@ function onQuizApply(plan: 'company' | 'individual' | 'supporter') {
         </div>
       </div>
 
-      <!-- Final CTA -->
+      <!-- CTA -->
       <div class="join-cta-block text-center reveal-on-scroll active">
         <h2>{{ t('join.ctaTitle') }}</h2>
         <p>{{ t('join.ctaDesc') }}</p>
@@ -214,6 +217,27 @@ function onQuizApply(plan: 'company' | 'individual' | 'supporter') {
           {{ t('join.ctaButton') }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
+      </div>
+
+
+
+      <!-- Supersponsor add-on (subtle, obligation to mention) -->
+      <div class="supersponsor-block reveal-on-scroll active">
+        <div class="supersponsor-inner">
+          <div class="supersponsor-header">
+            <span class="supersponsor-label">{{ t('join.supersponsor.type') }}</span>
+            <span class="supersponsor-price">{{ t('join.supersponsor.price') }} {{ t('join.perYear') }}</span>
+          </div>
+          <p class="supersponsor-desc">{{ t('join.supersponsor.desc') }}</p>
+          <ul class="supersponsor-perks">
+            <li>{{ t('join.supersponsor.perk1') }}</li>
+            <li>{{ t('join.supersponsor.perk2') }}</li>
+          </ul>
+          <p class="supersponsor-note">{{ t('join.supersponsor.note') }}</p>
+          <button class="supersponsor-cta" @click="openModal('supersponsor')">
+            {{ t('join.supersponsor.cta') }}
+          </button>
+        </div>
       </div>
 
     </div>
@@ -645,6 +669,107 @@ function onQuizApply(plan: 'company' | 'individual' | 'supporter') {
   color: var(--text-muted);
   line-height: 1.6;
   max-width: 100%;
+}
+
+/* ── Supersponsor block ── */
+.supersponsor-block {
+  margin-bottom: 8rem;
+}
+
+.supersponsor-inner {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.6rem;
+  padding: 3.2rem;
+  backdrop-filter: blur(20px);
+  max-width: 72rem;
+}
+
+.supersponsor-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.supersponsor-label {
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.supersponsor-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.supersponsor-desc {
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.6rem;
+}
+
+.supersponsor-perks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.supersponsor-perks li {
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  padding-left: 1.4rem;
+  position: relative;
+}
+
+.supersponsor-perks li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+}
+
+.supersponsor-note {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.supersponsor-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 2.4rem;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  font-family: inherit;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.supersponsor-cta:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+/* ── price tax label ── */
+.price-tax {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-top: -1.4rem;
+  margin-bottom: 2rem;
 }
 
 /* ── Final CTA ── */

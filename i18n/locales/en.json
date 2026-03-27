@@ -27,10 +27,11 @@
   },
   "join": {
     "lead": "Toffe Kerels is not an open platform. It's a tight circle of professionals who know, trust, and vouch for each other. Want to be part of it?",
-    "perYear": "/ year",
+    "perYear": "/ month",
+    "inclTax": "incl. tax",
     "company": {
       "type": "Company",
-      "price": "€1,000",
+      "price": "€100",
       "desc": "Put your company on the map — literally. Your business gets a full profile in the showcase and a pin on the member map. This tier also includes 1 personal account for one person at your company.",
       "perk1": "Full company profile in the showcase",
       "perk2": "Listed on the member map",
@@ -42,7 +43,7 @@
     "individual": {
       "badge": "Per person",
       "type": "Person",
-      "price": "€125",
+      "price": "€10",
       "desc": "A personal membership for an individual. You get your own profile in the showcase and access to all community events. Note: this tier does not include a business listing or a pin on the map — that's part of the Company tier.",
       "perk1": "Own personal profile in the showcase",
       "perk2": "Invitation to the annual BBQ",
@@ -53,7 +54,7 @@
     },
     "supporter": {
       "type": "Supporter",
-      "price": "€25",
+      "price": "€2.50",
       "desc": "Believe in what Toffe Kerels stands for? Support the community and get access to exclusive content available only to supporters.",
       "perk1": "Access to members-only content on the platform",
       "perk2": "You help keep the community running",
@@ -119,10 +120,10 @@
       "q6a": "I want to profile my business and actively participate",
       "q6b": "I want to profile myself and actively participate",
       "q6c": "I want to support the community without being an active member",
-      "q7": "What is your budget for an annual membership?",
-      "q7a": "€1,000 per year is fine for the visibility I'm looking for",
-      "q7b": "€125 per year works for me",
-      "q7c": "€25 per year is what I want to contribute",
+      "q7": "What is your budget for a monthly membership?",
+      "q7a": "€100 per month is fine for the visibility I'm looking for",
+      "q7b": "€10 per month works for me",
+      "q7c": "€2.50 per month is what I want to contribute",
       "resultCompanyTitle": "Company tier",
       "resultCompanyDesc": "You want to put your business on the map. With the Company tier you get a full company profile in the showcase, a pin on the member map, warm referrals and 1 personal account for someone at your company.",
       "resultIndividualTitle": "Person tier",
@@ -130,21 +131,32 @@
       "resultSupporterTitle": "Supporter tier",
       "resultSupporterDesc": "You believe in what Toffe Kerels stands for and want to support the community. As a supporter you get access to members-only content on the platform, without being an active member."
     },
+    "supersponsor": {
+      "type": "Supersponsor",
+      "price": "€5,000",
+      "desc": "An add-on to the Company tier for organisations that want to play an active role in the development of the platform.",
+      "perk1": "Priority pin on the member map",
+      "perk2": "A say in development meetings",
+      "note": "The Supersponsor tier is an add-on to the Company tier and cannot be purchased separately. A minimum commitment of 2 years applies; the full 2 years are invoiced upfront. After the initial period, it automatically converts to a monthly subscription. All prices include tax.",
+      "cta": "Request information"
+    },
     "ctaTitle": "Ready to join?",
     "ctaDesc": "Send us a message. We respond within 2 business days.",
     "ctaButton": "Send a message"
   },
   "modal": {
     "planLabel": {
-      "company": "Company (€1,000 / year)",
-      "individual": "Person (€125 / year)",
-      "supporter": "Supporter (€25 / year)",
+      "company": "Company (€100 / month)",
+      "individual": "Person (€10 / month)",
+      "supporter": "Supporter (€2.50 / month)",
+      "supersponsor": "Supersponsor (€5,000 / month, min. 2 years invoiced upfront, then monthly)",
       "general": "General"
     },
     "subject": {
       "company": "Company application – Toffe Kerels",
       "individual": "Employee application – Toffe Kerels",
       "supporter": "Become a supporter – Toffe Kerels",
+      "supersponsor": "Supersponsor information – Toffe Kerels",
       "general": "Application – Toffe Kerels"
     },
     "defaultMessage": "Hi Toffe Kerels,\n\nI would like to apply for the {plan} plan.\n\nPlease feel free to contact me to discuss the next steps.\n\nKind regards,\n{name}",

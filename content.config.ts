@@ -18,6 +18,7 @@ export default defineContentConfig({
         vertical: z.boolean().default(false),
         hiddenCompany: z.boolean().default(false),
         hidden: z.boolean().default(false),
+        priority: z.boolean().default(false),
         contact: z.object({
           email: z.string().optional(),
           phone: z.string().optional(),

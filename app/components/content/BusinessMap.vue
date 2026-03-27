@@ -121,6 +121,143 @@ const markers = computed(() =>
   })
 )
 
+// ── Clustering ───────────────────────────────────────────────────────────────
+const CLUSTER_RADIUS = 40 // pixels
+
+const clustered = computed(() => {
+  // At maximum zoom, never cluster — show all pins individually
+  if (zoom.value >= 18) {
+    return markers.value.map(m => ({
+      type: 'single' as const,
+      x: m.x,
+      y: m.y,
+      count: 1,
+      companies: [m.company],
+      priority: !!m.company.priority,
+      shadowCluster: null
+    }))
+  }
+
+  // Priority pins are excluded from clustering — they always render individually
+  const items = markers.value.filter(m => !m.company.priority).slice()
+  const used = new Array(items.length).fill(false)
+  const result: Array<{
+    type: 'cluster' | 'single'
+    x: number
+    y: number
+    count: number
+    companies: any[]
+    priority: boolean
+    shadowCluster: { count: number; companies: any[]; x: number; y: number } | null
+  }> = []
+
+  for (let i = 0; i < items.length; i++) {
+    if (used[i]) continue
+    const group = [items[i]]
+    used[i] = true
+    for (let j = i + 1; j < items.length; j++) {
+      if (used[j]) continue
+      const dx = items[j].x - items[i].x
+      const dy = items[j].y - items[i].y
+      if (Math.sqrt(dx * dx + dy * dy) < CLUSTER_RADIUS) {
+        group.push(items[j])
+        used[j] = true
+      }
+    }
+    const cx = group.reduce((s, m) => s + m.x, 0) / group.length
+    const cy = group.reduce((s, m) => s + m.y, 0) / group.length
+    result.push({
+      type: group.length > 1 ? 'cluster' : 'single',
+      x: cx,
+      y: cy,
+      count: group.length,
+      companies: group.map(m => m.company),
+      priority: false,
+      shadowCluster: null
+    })
+  }
+
+  // Add priority pins on top — never clustered
+  // If a priority pin is near other result items, absorb them into a shadowCluster and remove them from the main result
+  // Priority pin visual bounding box: pin tip at (m.x, m.y), body extends ~52px up and ~20px wide
+  // Cluster bubble visual bounding box: centered at (r.x, r.y), radius ~22px
+  // Absorb any result item whose visual area overlaps the priority pin's visual area
+  const PRIORITY_PIN_HALF_W = 20
+  const PRIORITY_PIN_H = 52
+  const CLUSTER_BUBBLE_R = 26 // slightly larger than actual 22px for safety
+  for (const m of markers.value.filter(m => m.company.priority)) {
+    // Priority pin occupies: x ± 20px, y-52 to y (tip at bottom)
+    const pinLeft = m.x - PRIORITY_PIN_HALF_W
+    const pinRight = m.x + PRIORITY_PIN_HALF_W
+    const pinTop = m.y - PRIORITY_PIN_H
+    const pinBottom = m.y
+
+    const nearbyIndices: number[] = []
+    result.forEach((r, idx) => {
+      // Cluster/pin visual center: clusters centered at (r.x, r.y); single pins tip at (r.x, r.y) body up
+      // Use a generous overlap check: is the result item's center within the priority pin's expanded bounding box?
+      const expandedLeft = pinLeft - CLUSTER_BUBBLE_R
+      const expandedRight = pinRight + CLUSTER_BUBBLE_R
+      const expandedTop = pinTop - CLUSTER_BUBBLE_R
+      const expandedBottom = pinBottom + CLUSTER_BUBBLE_R
+      if (r.x >= expandedLeft && r.x <= expandedRight && r.y >= expandedTop && r.y <= expandedBottom) {
+        nearbyIndices.push(idx)
+        return
+      }
+      // Also check individual company pixel positions
+      const anyClose = r.companies.some((c: any) => {
+        if (!c.contact?.lat || !c.contact?.lng) return false
+        const px = latLngToPixel(c.contact.lat, c.contact.lng, zoom.value, originTileX.value, originTileY.value)
+        const cpx = px.x + offsetX.value
+        const cpy = px.y + offsetY.value
+        return cpx >= expandedLeft && cpx <= expandedRight && cpy >= expandedTop && cpy <= expandedBottom
+      })
+      if (anyClose) nearbyIndices.push(idx)
+    })
+    const nearby = nearbyIndices.map(i => result[i])
+    // Remove absorbed items from result so they don't render independently
+    for (let i = nearbyIndices.length - 1; i >= 0; i--) {
+      result.splice(nearbyIndices[i], 1)
+    }
+    const shadowCluster = nearby.length > 0
+      ? { count: nearby.reduce((s, r) => s + r.count, 0) + 1, companies: nearby.flatMap(r => r.companies), x: m.x, y: m.y }
+      : null
+    result.push({
+      type: 'single',
+      x: m.x,
+      y: m.y,
+      count: 1,
+      companies: [m.company],
+      priority: true,
+      shadowCluster
+    })
+  }
+
+  return result
+})
+
+// ── Render order: regular → shadow → priority ────────────────────────────────
+const renderItems = computed(() => {
+  const regular: any[] = []
+  const shadows: any[] = []
+  const priorities: any[] = []
+
+  for (const item of clustered.value) {
+    if (item.priority) {
+      if (item.shadowCluster) {
+        shadows.push({ ...item, renderType: 'shadow', key: 'shadow-' + item.companies[0].path })
+      }
+      priorities.push({ ...item, renderType: 'priority', key: 'priority-' + item.companies[0].path })
+    } else if (item.type === 'cluster') {
+      regular.push({ ...item, renderType: 'cluster', key: 'cluster-' + item.x + '-' + item.y })
+    } else {
+      regular.push({ ...item, renderType: 'single', key: 'single-' + item.companies[0].path })
+    }
+  }
+
+  return [...regular, ...shadows, ...priorities]
+})
+
 // ── Init: fit bounds ─────────────────────────────────────────────────────────
 function centerOn(lat: number, lng: number, z: number) {
   zoom.value = z
@@ -301,6 +438,17 @@ function onPinClick(marker: any) {
   nextTick(() => nextTick(() => updatePopupPosition(marker)))
 }
 
+function onClusterClick(cluster: any) {
+  if (didDrag) return
+  // Zoom in centred on the cluster
+  const lats = cluster.companies.map((c: any) => c.contact.lat)
+  const lngs = cluster.companies.map((c: any) => c.contact.lng)
+  const midLat = (Math.min(...lats) + Math.max(...lats)) / 2
+  const midLng = (Math.min(...lngs) + Math.max(...lngs)) / 2
+  centerOn(midLat, midLng, Math.min(18, zoom.value + 3))
+  activePin.value = null
+}
+
 function initials(title: string) {
   return title.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
 }
@@ -382,22 +530,69 @@ onMounted(() => {
           alt=""
         />
 
-        <!-- Markers -->
-        <button
-          v-for="marker in markers"
-          :key="marker.company.path"
-          class="map-pin"
-          :class="{ active: activePin?.path === marker.company.path }"
-          :style="{ left: marker.x + 'px', top: marker.y + 'px' }"
-          :title="marker.company.title"
-          @click.stop="onPinClick(marker)"
-        >
-          <svg viewBox="0 0 32 44" xmlns="http://www.w3.org/2000/svg" class="pin-svg">
-            <path d="M16 0C7.163 0 0 7.163 0 16c0 10.5 16 28 16 28S32 26.5 32 16C32 7.163 24.837 0 16 0z"/>
-            <circle cx="16" cy="16" r="7" fill="white" opacity="0.95"/>
-          </svg>
-          <span class="pin-label">{{ marker.company.title }}</span>
-        </button>
+        <!-- Markers / Clusters: rendered in paint order — regular first, shadow bubbles second, priority pins last -->
+        <template v-for="item in renderItems" :key="item.key">
+          <!-- Regular cluster bubble -->
+          <button
+            v-if="item.renderType === 'cluster'"
+            class="map-cluster"
+            :style="{ left: item.x + 'px', top: item.y + 'px' }"
+            :title="item.count + ' bedrijven'"
+            @click.stop="onClusterClick(item)"
+          >
+            <span class="cluster-count">{{ item.count }}</span>
+          </button>
+
+          <!-- Regular single pin -->
+          <button
+            v-else-if="item.renderType === 'single'"
+            class="map-pin"
+            :class="{ active: activePin?.path === item.companies[0].path }"
+            :style="{ left: item.x + 'px', top: item.y + 'px' }"
+            :title="item.companies[0].title"
+            @click.stop="onPinClick({ company: item.companies[0], x: item.x, y: item.y })"
+          >
+            <svg viewBox="0 0 32 44" xmlns="http://www.w3.org/2000/svg" class="pin-svg">
+              <path d="M16 0C7.163 0 0 7.163 0 16c0 10.5 16 28 16 28S32 26.5 32 16C32 7.163 24.837 0 16 0z"/>
+              <circle cx="16" cy="16" r="7" fill="white" opacity="0.95"/>
+            </svg>
+            <span class="pin-label">{{ item.companies[0].title }}</span>
+          </button>
+
+          <!-- Shadow cluster bubble behind a priority pin -->
+          <button
+            v-else-if="item.renderType === 'shadow'"
+            class="map-cluster map-cluster--priority-shadow"
+            :style="{ left: (item.x + 14) + 'px', top: (item.y + 14) + 'px' }"
+            :title="item.shadowCluster.count + ' bedrijven'"
+            @click.stop="onClusterClick(item.shadowCluster)"
+          >
+            <span class="cluster-count">{{ item.shadowCluster.count }}</span>
+          </button>
+
+          <!-- Priority pin — always last in DOM so it paints on top -->
+          <button
+            v-else-if="item.renderType === 'priority'"
+            class="map-pin map-pin--priority"
+            :class="{ active: activePin?.path === item.companies[0].path }"
+            :style="{ left: item.x + 'px', top: item.y + 'px' }"
+            :title="item.companies[0].title"
+            @click.stop="onPinClick({ company: item.companies[0], x: item.x, y: item.y })"
+          >
+            <svg viewBox="0 0 40 52" xmlns="http://www.w3.org/2000/svg" class="pin-svg pin-svg--priority">
+              <defs>
+                <linearGradient id="priority-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#7c3aed"/>
+                  <stop offset="100%" stop-color="#ec4899"/>
+                </linearGradient>
+              </defs>
+              <path d="M20 0 L40 20 L20 52 L0 20 Z" fill="url(#priority-grad)"/>
+              <circle cx="20" cy="20" r="8" fill="white" opacity="0.92"/>
+              <path d="M20 13 L21.8 18.2 L27 18.2 L22.6 21.4 L24.4 26.6 L20 23.4 L15.6 26.6 L17.4 21.4 L13 18.2 L18.2 18.2 Z" fill="url(#priority-grad)"/>
+            </svg>
+            <span class="pin-label pin-label--priority">{{ item.companies[0].title }}</span>
+          </button>
+        </template>
 
         <!-- Popup -->
         <Teleport to="body">
@@ -422,6 +617,7 @@ onMounted(() => {
               <div v-else class="popup-avatar">{{ initials(activePin.title) }}</div>
               <div class="popup-header-info">
                 <strong class="popup-name">{{ activePin.title }}</strong>
+                <span v-if="activePin.priority" class="popup-priority-badge">Supersponsor</span>
                 <div v-if="activePin.tags?.length" class="popup-tags">
                   <span v-for="tag in activePin.tags.slice(0, 3)" :key="tag">#{{ tag }}</span>
                 </div>
@@ -637,6 +833,83 @@ onMounted(() => {
   height: 256px;
   pointer-events: none;
   image-rendering: auto;
+}
+
+/* ── Cluster bubbles ── */
+.map-cluster {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.map-cluster:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: var(--accent-light);
+}
+
+.map-cluster--priority-shadow {
+  z-index: 11 !important;
+  opacity: 0.85;
+  background: var(--accent);
+  pointer-events: all;
+}
+
+.cluster-count {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #000;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ── Priority pin ── */
+.map-pin--priority {
+  z-index: 29 !important;
+}
+
+.pin-svg--priority {
+  width: 40px;
+  height: 52px;
+  filter: drop-shadow(0 4px 10px rgba(108, 63, 197, 0.7));
+  transition: transform 0.2s ease;
+  transform-origin: bottom center;
+}
+
+.map-pin--priority:hover .pin-svg--priority,
+.map-pin--priority.active .pin-svg--priority {
+  transform: scale(1.25);
+}
+
+.pin-label--priority {
+  background: linear-gradient(135deg, rgba(108, 63, 197, 0.95), rgba(59, 91, 219, 0.95)) !important;
+  border-color: rgba(108, 63, 197, 0.5) !important;
+  color: #fff !important;
+}
+
+.popup-priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #6c3fc5, #3b5bdb);
+  border-radius: 2rem;
+  padding: 0.2rem 0.7rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.02em;
 }
 
 /* ── Markers ── */

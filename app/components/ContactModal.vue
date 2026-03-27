@@ -2,7 +2,7 @@
 const { t } = useI18n()
 
 const props = defineProps<{
-  plan: 'company' | 'individual' | 'supporter' | 'general'
+  plan: 'company' | 'individual' | 'supporter' | 'supersponsor' | 'general'
 }>()
 
 const emit = defineEmits<{

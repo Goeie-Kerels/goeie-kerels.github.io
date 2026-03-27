@@ -27,10 +27,11 @@
   },
   "join": {
     "lead": "Toffe Kerels is geen open platform. Het is een hechte kring van vakmensen die elkaar kennen, vertrouwen en voor elkaar instaan. Wil jij erbij horen?",
-    "perYear": "/ jaar",
+    "perYear": "/ maand",
+    "inclTax": "incl. btw",
     "company": {
       "type": "Bedrijf",
-      "price": "€1.000",
+      "price": "€100",
       "desc": "Zet jouw bedrijf op de kaart — letterlijk. Je bedrijf krijgt een volledige pagina in de showcase en een pin op de ledenkaart. Dit pakket bevat ook 1 persoonlijk account voor één persoon binnen jouw bedrijf.",
       "perk1": "Volledige bedrijfspagina in de showcase",
       "perk2": "Zichtbaar op de ledenkaart",
@@ -42,7 +43,7 @@
     "individual": {
       "badge": "Per persoon",
       "type": "Persoon",
-      "price": "€125",
+      "price": "€10",
       "desc": "Een persoonlijk lidmaatschap voor een individu. Je krijgt een eigen profiel in de showcase en toegang tot alle community-evenementen. Let op: dit pakket bevat geen bedrijfspagina of pin op de kaart — dat hoort bij het Bedrijf-pakket.",
       "perk1": "Eigen persoonlijk profiel in de showcase",
       "perk2": "Uitnodiging voor de jaarlijkse BBQ",
@@ -53,7 +54,7 @@
     },
     "supporter": {
       "type": "Supporter",
-      "price": "€25",
+      "price": "€2,50",
       "desc": "Geloof jij in wat Toffe Kerels doet? Steun de community en krijg toegang tot exclusieve content die alleen voor supporters beschikbaar is.",
       "perk1": "Toegang tot besloten content op het platform",
       "perk2": "Jij houdt de community draaiende",
@@ -119,10 +120,10 @@
       "q6a": "Ik wil mijn bedrijf profileren en actief deelnemen",
       "q6b": "Ik wil mezelf profileren en actief deelnemen",
       "q6c": "Ik wil de community steunen zonder actief lid te zijn",
-      "q7": "Wat is jouw budget voor een jaarlijks lidmaatschap?",
-      "q7a": "€1.000 per jaar is prima voor de zichtbaarheid die ik zoek",
-      "q7b": "€125 per jaar past goed bij mij",
-      "q7c": "€25 per jaar is wat ik wil bijdragen",
+      "q7": "Wat is jouw budget voor een maandelijks lidmaatschap?",
+      "q7a": "€100 per maand is prima voor de zichtbaarheid die ik zoek",
+      "q7b": "€10 per maand past goed bij mij",
+      "q7c": "€2,50 per maand is wat ik wil bijdragen",
       "resultCompanyTitle": "Bedrijf-pakket",
       "resultCompanyDesc": "Jij wilt jouw bedrijf op de kaart zetten. Met het Bedrijf-pakket krijg je een volledige bedrijfspagina in de showcase, een pin op de ledenkaart, warme doorverwijzingen én 1 persoonlijk account voor iemand binnen jouw bedrijf.",
       "resultIndividualTitle": "Persoon-pakket",
@@ -130,21 +131,32 @@
       "resultSupporterTitle": "Supporter-pakket",
       "resultSupporterDesc": "Jij gelooft in wat Toffe Kerels doet en wilt de community steunen. Als supporter krijg je toegang tot besloten content op het platform, zonder actief lid te zijn."
     },
+    "supersponsor": {
+      "type": "Supersponsor",
+      "price": "€5.000",
+      "desc": "Een uitbreiding op het Bedrijf-pakket voor organisaties die een actieve rol willen spelen in de ontwikkeling van het platform.",
+      "perk1": "Prioriteitspin op de ledenkaart",
+      "perk2": "Inspraak tijdens ontwikkeloverleggen",
+      "note": "Het Supersponsor-pakket is een aanvulling op het Bedrijf-pakket en niet los verkrijgbaar. Er geldt een minimale looptijd van 2 jaar; de volledige 2 jaar worden vooraf gefactureerd. Na afloop van de initiële periode wordt het automatisch omgezet naar een maandelijks abonnement. Alle prijzen zijn inclusief btw.",
+      "cta": "Informatie opvragen"
+    },
     "ctaTitle": "Klaar om mee te doen?",
     "ctaDesc": "Stuur ons een berichtje. We reageren binnen 2 werkdagen.",
     "ctaButton": "Stuur een bericht"
   },
   "modal": {
     "planLabel": {
-      "company": "Bedrijf (€1.000 / jaar)",
-      "individual": "Persoon (€125 / jaar)",
-      "supporter": "Supporter (€25 / jaar)",
+      "company": "Bedrijf (€100 / maand)",
+      "individual": "Persoon (€10 / maand)",
+      "supporter": "Supporter (€2,50 / maand)",
+      "supersponsor": "Supersponsor (€5.000 / maand, min. 2 jaar vooraf gefactureerd, daarna maandelijks)",
       "general": "Algemeen"
     },
     "subject": {
       "company": "Aanmelding bedrijf – Toffe Kerels",
       "individual": "Aanmelding medewerker – Toffe Kerels",
       "supporter": "Supporter worden – Toffe Kerels",
+      "supersponsor": "Supersponsor informatie – Toffe Kerels",
       "general": "Aanmelding – Toffe Kerels"
     },
     "defaultMessage": "Hoi Toffe Kerels,\n\nIk wil me graag aanmelden voor het {plan} pakket.\n\nNeem gerust contact met me op om de volgende stappen te bespreken.\n\nMet vriendelijke groet,\n{name}",

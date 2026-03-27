@@ -4,6 +4,7 @@ description: "Slimme applicaties, handige koppelingen en doelgerichte websites. 
 image: "/images/showcase/intractief.jpg"
 video: "/videos/placeholders/video-1.webm"
 type: "company"
+priority: true
 members: ["Martijn van Schaik", "Michaël van de Giessen", "Edwin Jansen", "Wout van der Pol", "Bram van Heumen", 
           "Roy Tersluijsen", "Rick Pennings", "Ramon Luteijn"]
 contact:
