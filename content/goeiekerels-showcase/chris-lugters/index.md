@@ -1,6 +1,6 @@
 ---
 title: "Chris Lugters"
-image: "/images/showcase/placeholder.jpg"
+image: "/images/showcase/placeholder.png"
 description: "Automotive vakspecialist met een oog voor detail."
 video: "/videos/placeholders/video-4.webm"
 type: "individual"

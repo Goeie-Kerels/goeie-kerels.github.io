@@ -32,6 +32,15 @@ fi
 PLACEHOLDER_WIDTH=800
 SEEK="00:00:01"
 
+# BSD sed (macOS) requires -i '', GNU sed (Linux) requires -i without argument
+sedi() {
+  if sed --version 2>/dev/null | grep -q GNU; then
+    sed -i "$@"
+  else
+    sed -i '' "$@"
+  fi
+}
+
 mkdir -p "$IMG_DIR" "$VID_DIR"
 
 # ── 1. Render placeholder once ───────────────────────────────────────────────
@@ -158,12 +167,12 @@ find "$CONTENT_DIR" -name "index.md" | sort | while read -r mdfile; do
   # Update image
   if [ -n "$new_image_path" ]; then
     if [ -z "$cur_image" ]; then
-      sed -i '' "/^title:/a\\
+      sedi "/^title:/a\\
 image: \"$new_image_path\"
 " "$mdfile"
       echo "  Frontmatter: added image: $new_image_path"
     elif [ "$cur_image" != "$new_image_path" ]; then
-      sed -i '' "s|image: \"$cur_image\"|image: \"$new_image_path\"|" "$mdfile"
+      sedi "s|image: \"$cur_image\"|image: \"$new_image_path\"|" "$mdfile"
       echo "  Frontmatter: updated image: $cur_image → $new_image_path"
     fi
   fi
@@ -171,12 +180,12 @@ image: \"$new_image_path\"
   # Update video (prefer webm path)
   if [ -n "$new_video_path" ] && [ "$cur_video" != "$new_video_path" ]; then
     if [ -z "$cur_video" ]; then
-      sed -i '' "/^title:/a\\
+      sedi "/^title:/a\\
 video: \"$new_video_path\"
 " "$mdfile"
       echo "  Frontmatter: added video: $new_video_path"
     else
-      sed -i '' "s|video: \"$cur_video\"|video: \"$new_video_path\"|" "$mdfile"
+      sedi "s|video: \"$cur_video\"|video: \"$new_video_path\"|" "$mdfile"
       echo "  Frontmatter: updated video: $cur_video → $new_video_path"
     fi
   fi
@@ -184,12 +193,12 @@ video: \"$new_video_path\"
   # Update vertical flag
   if [ "$new_vertical" = "true" ] && [ "$cur_vertical" != "true" ]; then
     if [ -z "$cur_vertical" ]; then
-      sed -i '' "/^title:/a\\
+      sedi "/^title:/a\\
 vertical: true
 " "$mdfile"
       echo "  Frontmatter: added vertical: true"
     else
-      sed -i '' "s|^vertical:.*|vertical: true|" "$mdfile"
+      sedi "s|^vertical:.*|vertical: true|" "$mdfile"
     fi
   fi
 
@@ -201,7 +210,7 @@ echo "── Cleanup ───────────────────�
 
 # Collect valid slugs from ALL showcase content directories so we never
 # delete media that belongs to a different build target.
-all_valid_slugs=$(find "$SCRIPT_DIR/../content" -maxdepth 2 -name "index.md" \
+all_valid_slugs=$(find "$SCRIPT_DIR/../content" -maxdepth 3 -name "index.md" \
   | grep -E "/(showcase|[^/]+-showcase)/" \
   | xargs -I{} dirname {} \
   | xargs -I{} basename {})

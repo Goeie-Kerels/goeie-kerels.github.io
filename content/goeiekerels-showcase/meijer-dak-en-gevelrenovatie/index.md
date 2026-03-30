@@ -2,7 +2,7 @@
 title: "Meijer Dak en Gevelrenovatie"
 description: "Metselwerk in nieuwbouw en renovatie voor gevel en dak, met specialisatie op baksteen en ambachtelijke 
 voegwerken"
-image: "/images/showcase/meijer-dak-en-gevelrenovatie.jpg"
+image: "/images/showcase/placeholder.png"
 video: "/videos/showcase/meijer-dak-en-gevelrenovatie.webm"
 type: "company"
 members: ["Henk Meijer"]

@@ -1,6 +1,6 @@
 ---
 title: "Henk Meijer"
-image: "/images/showcase/henk-meijer.jpg"
+image: "/images/showcase/placeholder.png"
 description: "Van detailer tot autoverkoper tot influencer — Daan Willems doet het allemaal."
 video: "/videos/showcase/henk-meijer.webm"
 type: "individual"
