@@ -1,8 +1,9 @@
 <script setup lang="ts">
 const { locale } = useI18n()
-const { data: allItems } = await useAsyncData('community-items', () => {
-  return queryCollection('content')
-    .where('path', 'LIKE', '/showcase/%')
+const { target } = useBuildTarget()
+const showcaseCollection = target === 'default' ? 'showcase' : `${target}_showcase`
+const { data: allItems } = await useAsyncData(`community-items-${target}`, () => {
+  return queryCollection(showcaseCollection as any)
     .where('hidden', '<>', true)
     .limit(12)
     .all()

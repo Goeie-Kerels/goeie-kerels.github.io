@@ -12,10 +12,10 @@ function getCompanies(item: any): string[] {
   return []
 }
 
-const { data: allItems } = await useAsyncData(`showcase-items`, () => {
-  return queryCollection('content')
-    .where('path', 'LIKE', '/showcase/%')
-    .where('path', 'NOT LIKE', '/en/%')
+const { target } = useBuildTarget()
+const showcaseCollection = target === 'default' ? 'showcase' : `${target}_showcase`
+const { data: allItems } = await useAsyncData(`showcase-items-${target}`, () => {
+  return queryCollection(showcaseCollection as any)
     .where('hidden', '<>', true)
     .all()
 })
@@ -43,17 +43,39 @@ const allTags = computed(() => {
   return Array.from(tags).sort()
 })
 
+// Seeded pseudo-random number generator (mulberry32) — same seed = same sequence
+function seededRandom(seed: number) {
+  return () => {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed)
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t
+    return ((t ^ t >>> 14) >>> 0) / 4294967296
+  }
+}
+// Stable daily seed: same value on server and client for the same UTC day
+const dailySeed = Math.floor(Date.now() / 86400000)
+
 // 12 random items for home page, priority items always included
 const homeItems = computed(() => {
   if (!allItems.value) return []
   const HOME_COUNT = 12
   const priority = allItems.value.filter(item => item.priority)
   const rest = allItems.value.filter(item => !item.priority)
-  // Shuffle rest deterministically per session using Fisher-Yates with Math.random
-  const shuffled = [...rest].sort(() => Math.random() - 0.5)
+  const rand = seededRandom(dailySeed)
+  // Fisher-Yates shuffle with seeded RNG
+  const shuffled = [...rest]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
   const fill = shuffled.slice(0, Math.max(0, HOME_COUNT - priority.length))
-  // Shuffle the combined list so priority items aren't always first
-  return [...priority, ...fill].sort(() => Math.random() - 0.5)
+  const combined = [...priority, ...fill]
+  const rand2 = seededRandom(dailySeed + 1)
+  for (let i = combined.length - 1; i > 0; i--) {
+    const j = Math.floor(rand2() * (i + 1));
+    [combined[i], combined[j]] = [combined[j], combined[i]]
+  }
+  return combined
 })
 
 const hasActiveFilters = computed(() => search.value || typeFilter.value !== 'all' || activeTag.value)
@@ -285,6 +307,7 @@ function clearFilters() {
 <style scoped>
 .showcase-section {
   padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 
 /* ── Header ── */

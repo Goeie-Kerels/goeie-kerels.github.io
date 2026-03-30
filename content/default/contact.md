@@ -1,5 +1,7 @@
 ---
 title: "Contact | Toffe Kerels"
+nav: "nav.contact"
+order: 4
 description: "Heb je een Toffe Kerel nodig? Wij helpen je in contact te komen met het juiste bedrijf."
 ---
 ::web-only

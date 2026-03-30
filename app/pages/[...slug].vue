@@ -2,13 +2,34 @@
 const route = useRoute()
 const pageData = useState('currentPage', () => null)
 const { locale, defaultLocale } = useI18n()
-// Fetch content, falling back to the default-locale path if no translation exists
+const { target } = useBuildTarget()
+const contentCollection = target === 'default' ? 'content' : `${target}_content`
+const showcaseCollection = target === 'default' ? 'showcase' : `${target}_showcase`
+
+// Map route path to content path: prepend /{target}, treat '/' as '/{target}'
+function toContentPath(routePath: string, targetPrefix: string): string {
+  // Nuxt Content strips 'index' from path, so /default/index.md → /default
+  // Route '/' maps to '/{target}', '/contact' maps to '/{target}/contact'
+  const clean = routePath === '/' ? '' : routePath
+  return `/${targetPrefix}${clean}`
+}
+
+// Fetch content, falling back to showcase collection, then locale fallback
 const { data: page } = await useAsyncData(route.path, async () => {
-  const result = await queryCollection('content').path(route.path).first()
+  const contentPath = toContentPath(route.path, target)
+  const result = await queryCollection(contentCollection as any).path(contentPath).first()
   if (result) return result
+
+  // Try showcase collection (paths are stored as /showcase/slug, matching route directly)
+  const showcaseResult = await queryCollection(showcaseCollection as any).path(route.path).first()
+  if (showcaseResult) return showcaseResult
+
   if (locale.value !== defaultLocale.value) {
-    const fallbackPath = route.path.replace(new RegExp(`^/${locale.value}`), '') || '/'
-    return queryCollection('content').path(fallbackPath).first()
+    const strippedPath = route.path.replace(new RegExp(`^/${locale.value}`), '') || '/'
+    const fallbackPath = toContentPath(strippedPath, target)
+    const fallback = await queryCollection(contentCollection as any).path(fallbackPath).first()
+    if (fallback) return fallback
+    return queryCollection(showcaseCollection as any).path(strippedPath).first()
   }
   return null
 })

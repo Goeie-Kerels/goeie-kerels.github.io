@@ -3,13 +3,15 @@
     <nav class="container nav-container">
       <NuxtLink 
         :to="localePath('/')" 
-        class="logo-brand has-gradient"
-        :class="{ 'is-light': !isScrolled || isDarkTheme || true }"
+        class="logo-brand"
+        :class="props.logoClass ?? 'has-gradient'"
       >
-        TOFFE<span>KERELS</span>
+        <slot name="logo">
+          TOFFE<span>KERELS</span>
+        </slot>
       </NuxtLink>
       
-      <div class="nav-links glass">
+      <div v-if="navLinks.length > 1" class="nav-links glass">
         <NuxtLink 
           v-for="link in navLinks" 
           :key="link.path" 
@@ -20,9 +22,9 @@
         </NuxtLink>
       </div>
 
-      <div class="header-actions">
-        <ThemeSlider />
-        <div class="locale-switcher glass">
+      <div class="header-actions" :class="{ 'is-empty': !showThemeSlider && !showLocaleSwitcher }">
+        <ThemeSlider v-if="showThemeSlider" />
+        <div v-if="showLocaleSwitcher" class="locale-switcher glass">
           <NuxtLink 
             v-for="loc in locales" 
             :key="loc.code" 
@@ -33,6 +35,7 @@
           </NuxtLink>
         </div>
         <button 
+          v-if="navLinks.length > 1"
           class="mobile-menu-btn" 
           aria-label="Menu"
           @click="isMenuOpen = !isMenuOpen"
@@ -64,8 +67,8 @@
           </div>
           
           <div class="mobile-footer">
-            <ThemeSlider />
-            <div class="mobile-locales">
+            <ThemeSlider v-if="showThemeSlider" />
+            <div v-if="showLocaleSwitcher" class="mobile-locales">
               <NuxtLink 
                 v-for="loc in locales" 
                 :key="loc.code" 
@@ -163,7 +166,7 @@
                 </div>
               </Transition>
             </Teleport>
-            <p class="mobile-copyright">&copy; {{ new Date().getFullYear() }} Toffe Kerels</p>
+            <p class="mobile-copyright">&copy; {{ new Date().getFullYear() }} {{ props.copyright ?? brand.copyright }}</p>
           </div>
         </div>
       </div>
@@ -273,13 +276,38 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
 
-const navLinks = computed(() => [
-  { name: 'nav.home', path: '/' },
-  { name: 'nav.showcase', path: '/showcase' },
-  { name: 'nav.map', path: '/map' },
-  { name: 'nav.contact', path: '/contact' },
-  { name: 'nav.join', path: '/meedoen' }
-])
+const props = withDefaults(defineProps<{
+  showThemeSlider?: boolean
+  showLocaleSwitcher?: boolean
+  copyright?: string
+  logoClass?: string
+}>(), {
+  showThemeSlider: true,
+  showLocaleSwitcher: true,
+})
+const showThemeSlider = computed(() => props.showThemeSlider)
+const showLocaleSwitcher = computed(() => props.showLocaleSwitcher)
+
+const { target } = useBuildTarget()
+const config = useRuntimeConfig()
+const brand = computed(() => {
+  const brands = config.public.brands as Record<string, any>
+  return brands[target] ?? brands['default']
+})
+const contentCollection = target === 'default' ? 'content' : target+'_content'
+const { data: navPages } = await useAsyncData('nav-links-'+target, () =>
+  queryCollection(contentCollection as any)
+    .where('nav', 'IS NOT NULL', '')
+    .order('order', 'ASC')
+    .select('path', 'nav', 'order')
+    .all()
+)
+const navLinks = computed(() =>
+  (navPages.value ?? []).map(p => ({
+    name: p.nav as string,
+    path: p.path.replace('/'+target, '') || '/'
+  }))
+)
 </script>
 
 <style scoped>
@@ -307,6 +335,20 @@ const navLinks = computed(() => [
   justify-content: space-between;
   align-items: center;
   width: 100%;
+}
+
+.nav-container:has(.header-actions.is-empty) {
+  justify-content: center;
+  gap: 0;
+}
+
+.nav-container:has(.header-actions.is-empty) .logo-brand {
+  position: absolute;
+  left: 6rem;
+}
+
+.nav-container:has(.header-actions.is-empty) .header-actions {
+  display: none;
 }
 
 .nav-links {

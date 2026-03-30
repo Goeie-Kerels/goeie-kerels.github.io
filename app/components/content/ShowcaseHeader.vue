@@ -1,10 +1,7 @@
-<script setup lang="ts">
-const { locale } = useI18n()
-</script>
 <template>
   <div class="section-header text-center reveal-on-scroll active">
-    <h2>{{ locale === 'en' ? 'Our' : 'Onze' }} <span class="accent-text">{{ locale === 'en' ? 'Members' : 'Leden' }}</span></h2>
-    <p class="section-sub">{{ locale === 'en' ? 'A unique mix of driven companies and passionate individuals.' : 'Een uniek mix van gedreven bedrijven en gepassioneerde personen.' }}</p>
+    <h2><slot name="title" /></h2>
+    <p class="section-sub"><slot name="subtitle" /></p>
   </div>
 </template>
 

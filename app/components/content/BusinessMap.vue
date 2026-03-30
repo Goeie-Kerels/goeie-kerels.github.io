@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const { t } = useI18n()
-const { data: companies } = await useAsyncData('map-companies', () =>
-  queryCollection('content')
+const { target } = useBuildTarget()
+const showcaseCollection = target === 'default' ? 'showcase' : `${target}_showcase`
+const { data: companies } = await useAsyncData(`map-companies-${target}`, () =>
+  queryCollection(showcaseCollection as any)
     .where('type', '=', 'company')
     .where('hidden', '<>', true)
     .all()
@@ -790,6 +792,8 @@ onMounted(() => {
 /* ── Postal search bar ── */
 .map-search-bar {
   margin-bottom: 1.2rem;
+  margin-left: 5%;
+  width: 90%;
 }
 
 .map-search-input-wrap {
@@ -1377,6 +1381,7 @@ onMounted(() => {
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .biz-map { height: 520px; border-radius: 1.4rem; width: 100%; margin-left: 0; }
+  .map-search-bar { width: 100%; margin-left: 0; }
   .map-popup { width: 30rem; padding: 1.6rem; }
 }
 

@@ -1,5 +1,7 @@
 ---
 title: "Meedoen | Toffe Kerels"
+nav: "nav.join"
+order: 5
 description: "Word onderdeel van de Toffe Kerels community. Exclusief, persoonlijk en voor echte vakmensen."
 ---
 ::web-only

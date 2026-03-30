@@ -1,5 +1,7 @@
 ---
 title: "Bedrijven op de kaart | Toffe Kerels"
+nav: "nav.map"
+order: 3
 description: "Vind een Toffe Kerel bij jou in de buurt."
 ---
 ::web-only
