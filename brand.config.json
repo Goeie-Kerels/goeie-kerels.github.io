@@ -13,8 +13,10 @@
   "copyright": "Goeiekerels",
   "htmlLang": "nl",
   "themeColor": "#0f172a",
-  "pwaDescription": "Showcase voor de goeieste bedrijven.",
+  "pwaDescription": "Showcase voor de goeiste bedrijven.",
   "ogImageAlt": "Goeiekerels – Showcase",
   "contentDir": "goeiekerels",
-  "showcaseDir": "goeiekerels-showcase"
+  "showcaseDir": "goeiekerels-showcase",
+  "showThemeSlider": false,
+  "showLocaleSwitcher": false
 }

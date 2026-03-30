@@ -285,10 +285,9 @@ const props = withDefaults(defineProps<{
   showThemeSlider: true,
   showLocaleSwitcher: true,
 })
-const showThemeSlider = computed(() => props.showThemeSlider)
-const showLocaleSwitcher = computed(() => props.showLocaleSwitcher)
-
 const { brand } = useBuildTarget()
+const showThemeSlider = computed(() => props.showThemeSlider && (brand.showThemeSlider !== false))
+const showLocaleSwitcher = computed(() => props.showLocaleSwitcher && (brand.showLocaleSwitcher !== false))
 const { data: navPages } = await useAsyncData('nav-links-'+brand.id, () =>
   queryCollection('brand_content' as any)
     .where('nav', 'IS NOT NULL', '')
