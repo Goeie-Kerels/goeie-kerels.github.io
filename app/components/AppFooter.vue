@@ -21,7 +21,7 @@ const navLinks = computed(() =>
     <div class="container footer-grid">
       <div class="footer-col">
         <div class="footer-logo">
-          <h3 class="logo-brand" :class="brand.logoClass">{{ brand.logoText }}<span>{{ brand.logoSpan }}</span></h3>
+          <h3 class="logo-brand" :class="brand.logoClass">{{ brand.logoText }}<span>{{ brand.logoSpan }}</span><span v-if="brand.logoDot" class="logo-dot">{{ brand.logoDot }}</span></h3>
         </div>
         <p>{{ t(brand.descriptionKey) }}</p>
       </div>

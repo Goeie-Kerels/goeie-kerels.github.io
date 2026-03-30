@@ -5,6 +5,8 @@
   "logoText": "MIJN",
   "logoSpan": "PLATFORM",
   "logoClass": "is-light has-gradient",
+  "logoClassHeader": null,
+  "logoDot": null,
   "descriptionKey": "footer.description.default",
   "email": "info@example.com",
   "phone": "",
@@ -16,5 +18,7 @@
   "pwaDescription": "Een showcase platform voor lokale ondernemers.",
   "ogImageAlt": "Mijn Platform – Showcase",
   "contentDir": "default",
-  "showcaseDir": "default-showcase"
+  "showcaseDir": "default-showcase",
+  "showThemeSlider": true,
+  "showLocaleSwitcher": true
 }

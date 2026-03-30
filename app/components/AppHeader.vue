@@ -4,10 +4,10 @@
       <NuxtLink 
         :to="localePath('/')" 
         class="logo-brand"
-        :class="props.logoClass ?? brand.logoClass ?? 'has-gradient'"
+        :class="props.logoClass ?? brand.logoClassHeader ?? brand.logoClass ?? 'has-gradient'"
       >
         <slot name="logo">
-          {{ brand.logoText }}<span>{{ brand.logoSpan }}</span>
+          {{ brand.logoText }}<span>{{ brand.logoSpan }}</span><span v-if="brand.logoDot" class="logo-dot">{{ brand.logoDot }}</span>
         </slot>
       </NuxtLink>
       
