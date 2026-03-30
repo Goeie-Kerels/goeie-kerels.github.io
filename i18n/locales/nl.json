@@ -181,7 +181,8 @@
   },
   "footer": {
     "description": {
-      "default": "Showcase voor de tofste bedrijven in de regio. Wij bouwen moderne applicaties die opvallen.",
+      "default": "Een platform voor lokale ondernemers. Vervang deze tekst met uw eigen beschrijving.",
+      "toffekerels": "Showcase voor de tofste bedrijven in de regio. Wij bouwen moderne applicaties die opvallen.",
       "goeiekerels": "Een persoonlijk initiatief van Daan Willems — zijn beste vrienden en hun bedrijven in het zonnetje."
     },
     "navigation": "Navigatie",

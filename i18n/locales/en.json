@@ -181,7 +181,8 @@
   },
   "footer": {
     "description": {
-      "default": "Showcase for the coolest companies in the region. We build modern applications that stand out.",
+      "default": "A platform for local entrepreneurs. Replace this text with your own description.",
+      "toffekerels": "Showcase for the coolest companies in the region. We build modern applications that stand out.",
       "goeiekerels": "A personal initiative by Daan Willems — putting his best friends and their businesses in the spotlight."
     },
     "navigation": "Navigation",

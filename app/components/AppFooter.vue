@@ -101,16 +101,6 @@ const navLinks = computed(() =>
   color: var(--text-muted);
   font-size: 1.2rem;
 }
-/* goeiekerels footer logo sizing */
-.footer-gk-logo {
-  gap: 0.1rem;
-}
-.footer-gk-logo .gk-goeie {
-  font-size: 1.1rem;
-}
-.footer-gk-logo .gk-kerels {
-  font-size: 2rem;
-}
 @media (max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr;
