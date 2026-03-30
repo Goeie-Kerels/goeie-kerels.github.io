@@ -12,6 +12,7 @@ function getBuildTargetFromCname(): string {
 }
 
 const buildTarget = process.env.NUXT_PUBLIC_BUILD_TARGET || getBuildTargetFromCname()
+console.log(`[nuxt.config] NUXT_PUBLIC_BUILD_TARGET env: "${process.env.NUXT_PUBLIC_BUILD_TARGET ?? '(unset)'}" → resolved buildTarget: "${buildTarget}"`)
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2026-03-24',
