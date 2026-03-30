@@ -69,23 +69,30 @@ html[data-brand="goeiekerels"] button.btn:hover {
 /* ── goeiekerels custom logo ── */
 html[data-brand="goeiekerels"] .logo-brand {
   font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 700;
-  font-size: 3.2rem;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  font-size: 1.4rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: #fff;
   line-height: 1;
   align-items: baseline;
+  gap: 0.3rem;
 }
-html[data-brand="goeiekerels"] .logo-brand span {
+/* KERELS — large & heavy */
+html[data-brand="goeiekerels"] .logo-brand span:first-of-type {
+  font-size: 3.4rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
   color: #fff;
   -webkit-text-fill-color: #fff;
 }
 html[data-brand="goeiekerels"] .logo-dot {
-  color: var(--accent2);
-  -webkit-text-fill-color: var(--accent2);
-  font-weight: 700;
+  font-size: 3.4rem;
+  font-weight: 900;
+  color: var(--accent);
+  -webkit-text-fill-color: var(--accent);
+  letter-spacing: 0;
 }
-
 /* Scrolled state: keep logo readable */
 html[data-brand="goeiekerels"] .app-header.is-scrolled .logo-brand {
   color: #fff;
