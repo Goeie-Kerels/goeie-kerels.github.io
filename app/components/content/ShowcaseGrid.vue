@@ -12,10 +12,9 @@ function getCompanies(item: any): string[] {
   return []
 }
 
-const { target } = useBuildTarget()
-const showcaseCollection = target === 'default' ? 'showcase' : `${target}_showcase`
-const { data: allItems } = await useAsyncData(`showcase-items-${target}`, () => {
-  return queryCollection(showcaseCollection as any)
+const { brand } = useBuildTarget()
+const { data: allItems } = await useAsyncData(`showcase-items-${brand.id}`, () => {
+  return queryCollection('brand_showcase' as any)
     .where('hidden', '<>', true)
     .all()
 })
@@ -231,7 +230,7 @@ function clearFilters() {
         <NuxtLink
           v-for="(item, index) in filteredItems"
           :key="item.path"
-          :to="item.path"
+          :to="item.path.replace('/' + brand.showcaseDir, '') || '/'"
           class="showcase-card"
           :class="item.type"
           :style="{ '--delay': (index * 0.07) + 's' }"

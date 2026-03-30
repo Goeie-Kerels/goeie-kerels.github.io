@@ -1,9 +1,8 @@
 <script setup lang="ts">
 const { t } = useI18n()
-const { target } = useBuildTarget()
-const showcaseCollection = target === 'default' ? 'showcase' : `${target}_showcase`
-const { data: companies } = await useAsyncData(`map-companies-${target}`, () =>
-  queryCollection(showcaseCollection as any)
+const { brand } = useBuildTarget()
+const { data: companies } = await useAsyncData(`map-companies-${brand.id}`, () =>
+  queryCollection('brand_showcase' as any)
     .where('type', '=', 'company')
     .where('hidden', '<>', true)
     .all()
