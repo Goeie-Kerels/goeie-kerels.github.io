@@ -20,15 +20,17 @@ const { data: page } = await useAsyncData(route.path, async () => {
   const contentPath = toContentPath(route.path, contentDir)
   const result = await queryCollection(contentCollection as any).path(contentPath).first()
   if (result) return result
-  // Try showcase collection (paths are stored as /showcase/slug, matching route directly)
-  const showcaseResult = await queryCollection(showcaseCollection as any).path(route.path).first()
+  // Try showcase collection (paths are stored as /{showcaseDir}/slug — prepend prefix)
+  const showcasePath = toContentPath(route.path, brand.showcaseDir as string)
+  const showcaseResult = await queryCollection(showcaseCollection as any).path(showcasePath).first()
   if (showcaseResult) return showcaseResult
   if (locale.value !== defaultLocale.value) {
     const strippedPath = route.path.replace(new RegExp(`^/${locale.value}`), '') || '/'
     const fallbackPath = toContentPath(strippedPath, contentDir)
     const fallback = await queryCollection(contentCollection as any).path(fallbackPath).first()
     if (fallback) return fallback
-    return queryCollection(showcaseCollection as any).path(strippedPath).first()
+    const fallbackShowcasePath = toContentPath(strippedPath, brand.showcaseDir as string)
+    return queryCollection(showcaseCollection as any).path(fallbackShowcasePath).first()
   }
   return null
 })

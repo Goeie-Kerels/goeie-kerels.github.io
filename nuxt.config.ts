@@ -34,6 +34,40 @@ function loadBrandConfig() {
 
 const brand = loadBrandConfig()
 const buildTarget = process.env.NUXT_PUBLIC_BUILD_TARGET || brand.id
+
+function getContentRoutes(contentDir: string, showcaseDir: string): string[] {
+  const routes: string[] = []
+
+  function scanDir(dir: string, base: string) {
+    if (!fs.existsSync(dir)) return
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory()) {
+        scanDir(path.join(dir, entry.name), `${base}/${entry.name}`)
+      } else if (entry.name.endsWith('.md')) {
+        const route = entry.name === 'index.md'
+          ? base || '/'
+          : `${base}/${entry.name.replace(/\.md$/, '')}`
+        routes.push(route || '/')
+      }
+    }
+  }
+
+  scanDir(path.resolve(`content/${contentDir}`), '')
+
+  const showcasePath = path.resolve(`content/${showcaseDir}`)
+  if (fs.existsSync(showcasePath)) {
+    for (const entry of fs.readdirSync(showcasePath, { withFileTypes: true })) {
+      if (entry.isDirectory() && fs.existsSync(path.join(showcasePath, entry.name, 'index.md'))) {
+        routes.push(`/${entry.name}`)
+      }
+    }
+  }
+
+  return [...new Set(routes)]
+}
+
+const contentRoutes = getContentRoutes(brand.contentDir, brand.showcaseDir)
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2026-03-24',
@@ -203,7 +237,7 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true,
-      routes: ['/'],
+      routes: ['/', ...contentRoutes],
       autoSubfolderIndex: true
     }
   },
