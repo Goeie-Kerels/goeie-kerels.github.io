@@ -1,14 +1,13 @@
 ---
 title: "Chris Lugters"
-image: "/images/showcase/placeholder.png"
+image: "/images/showcase/placeholder.jpg"
 description: "Automotive vakspecialist met een oog voor detail."
-video: "/videos/placeholders/video-4.webm"
 type: "individual"
 companies: ["Kwikfit", "Daan Willems Automotive"]
 hiddenCompany: false
 tags: ["Automotive", "Detailing", "Service", "Techniek"]
 ---
-::hero-section{video="/videos/placeholders/video-4.webm"}
+::hero-section{image="/images/showcase/placeholder.jpg"}
 # Chris Lugters
 Oog voor detail, passie voor auto's.
 ::

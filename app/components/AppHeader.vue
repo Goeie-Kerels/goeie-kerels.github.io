@@ -347,7 +347,7 @@ const navLinks = computed(() =>
   left: 6rem;
 }
 
-.nav-container:has(.header-actions.is-empty) .header-actions {
+.nav-container:has(.header-actions.is-empty:not(:has(.mobile-menu-btn))) .header-actions {
   display: none;
 }
 
@@ -516,7 +516,7 @@ html.is-dark .is-scrolled .mobile-menu-btn span {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   z-index: 1500;
   display: flex;
   align-items: center;

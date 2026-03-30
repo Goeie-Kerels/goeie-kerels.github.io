@@ -23,7 +23,7 @@ html[data-brand="goeiekerels"] {
 
 /* Light mode overrides */
 @media (prefers-color-scheme: light) {
-  html[data-brand="goeiekerels"]:not(.dark) {
+  html[data-brand="goeiekerels"]:not(.is-dark) {
     --primary: #2a1a0e;
     --primary-light: #3d2510;
     --accent: #e85d04;
@@ -39,7 +39,7 @@ html[data-brand="goeiekerels"] {
 }
 
 /* Force dark mode class overrides */
-html[data-brand="goeiekerels"].dark {
+html[data-brand="goeiekerels"].is-dark {
   --primary: #1a1008;
   --primary-light: #2a1a0e;
   --accent: #e85d04;
