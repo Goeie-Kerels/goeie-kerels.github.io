@@ -31,7 +31,7 @@ jobs:
       - name: Generate static site
         run: npm run generate
         env:
-          NUXT_PUBLIC_BUILD_TARGET: ${{ vars.BUILD_TARGET || 'default' }}
+          NUXT_PUBLIC_BUILD_TARGET: ${{ vars.BUILD_TARGET }}
 
       - name: Disable Jekyll
         run: touch .output/public/.nojekyll
