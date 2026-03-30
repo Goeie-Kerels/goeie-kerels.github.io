@@ -1,4 +1,21 @@
 import { defineContentConfig, defineCollection, z } from '@nuxt/content'
+import fs from 'node:fs'
+import path from 'node:path'
+
+function loadBrandConfig() {
+  const configPath = path.resolve('./brand.config.json')
+  const fallbackPath = path.resolve('./brand.config.default.json')
+  try {
+    const file = fs.existsSync(configPath) ? configPath : fallbackPath
+    return JSON.parse(fs.readFileSync(file, 'utf-8'))
+  } catch {
+    return { id: 'default', contentDir: 'default', showcaseDir: 'default-showcase' }
+  }
+}
+
+const brand = loadBrandConfig()
+const contentDir = brand.contentDir
+const showcaseDir = brand.showcaseDir
 
 const pageSchema = z.object({
   title: z.string(),
@@ -38,28 +55,26 @@ const pageSchema = z.object({
 
 export default defineContentConfig({
   collections: {
-    // Default build (toffekerels.nl) pages
-    content: defineCollection({
+    // Generic default pages (always available as fallback)
+    default_content: defineCollection({
       type: 'page',
       source: 'default/**/*.md',
       schema: pageSchema
     }),
-    // goeiekerels.nl pages
-    goeiekerels_content: defineCollection({
+    default_showcase: defineCollection({
       type: 'page',
-      source: 'goeiekerels/**/*.md',
+      source: 'default-showcase/**/*.md',
       schema: pageSchema
     }),
-    // Default build (toffekerels.nl) showcase entries
-    showcase: defineCollection({
+    // Active brand pages (driven by brand.config.json)
+    brand_content: defineCollection({
       type: 'page',
-      source: 'showcase/**/*.md',
+      source: `${contentDir}/**/*.md`,
       schema: pageSchema
     }),
-    // goeiekerels.nl showcase entries
-    goeiekerels_showcase: defineCollection({
+    brand_showcase: defineCollection({
       type: 'page',
-      source: 'goeiekerels-showcase/**/*.md',
+      source: `${showcaseDir}/**/*.md`,
       schema: pageSchema
     }),
   }

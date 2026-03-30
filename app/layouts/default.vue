@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import '~/assets/css/main.css'
+import '~/assets/css/brand.css'
 const { isAppMode } = useAppMode()
 </script>
 

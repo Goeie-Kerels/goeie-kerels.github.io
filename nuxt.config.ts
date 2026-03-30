@@ -1,18 +1,39 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import fs from 'node:fs'
 import path from 'node:path'
-function getBuildTargetFromCname(): string {
+
+function loadBrandConfig() {
+  const configPath = path.resolve('./brand.config.json')
+  const fallbackPath = path.resolve('./brand.config.default.json')
   try {
-    const cname = fs.readFileSync(path.resolve('./CNAME'), 'utf-8').trim()
-    const name = cname.split('.')[0]
-    return name || 'default'
+    const file = fs.existsSync(configPath) ? configPath : fallbackPath
+    return JSON.parse(fs.readFileSync(file, 'utf-8'))
   } catch {
-    return 'default'
+    return {
+      id: 'default',
+      name: 'Mijn Platform',
+      url: 'https://example.com',
+      logoText: 'MIJN',
+      logoSpan: 'PLATFORM',
+      logoClass: 'is-light has-gradient',
+      descriptionKey: 'footer.description.default',
+      email: 'info@example.com',
+      phone: '',
+      address: '',
+      location: 'Nederland',
+      copyright: 'Mijn Platform',
+      htmlLang: 'nl',
+      themeColor: '#0f172a',
+      pwaDescription: 'Een platform voor lokale ondernemers.',
+      ogImageAlt: 'Mijn Platform',
+      contentDir: 'default',
+      showcaseDir: 'default-showcase'
+    }
   }
 }
 
-const buildTarget = process.env.NUXT_PUBLIC_BUILD_TARGET || getBuildTargetFromCname()
-console.log(`[nuxt.config] NUXT_PUBLIC_BUILD_TARGET env: "${process.env.NUXT_PUBLIC_BUILD_TARGET ?? '(unset)'}" → resolved buildTarget: "${buildTarget}"`)
+const brand = loadBrandConfig()
+const buildTarget = process.env.NUXT_PUBLIC_BUILD_TARGET || brand.id
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2026-03-24',
@@ -22,32 +43,7 @@ export default defineNuxtConfig({
     public: {
       forceAppMode: false,
       buildTarget,
-      brands: {
-        default: {
-          name: 'Toffe Kerels',
-          logoText: 'TOFFE',
-          logoSpan: 'KERELS',
-          logoClass: 'is-light has-orange',
-          description: 'footer.description.default',
-          email: 'info@toffekerels.nl',
-          phone: '0412-480038',
-          address: 'Raadhuislaan 2A, 5341GM Oss',
-          location: 'Nederland',
-          copyright: 'Toffe Kerels'
-        },
-        goeiekerels: {
-          name: 'goeiekerels',
-          logoText: '',
-          logoSpan: '',
-          logoClass: '',
-          description: 'footer.description.goeiekerels',
-          email: 'info@goeiekerels.nl',
-          phone: '',
-          address: '',
-          location: 'Nederland',
-          copyright: 'goeiekerels'
-        }
-      }
+      brand
     }
   },
   compatibilityVersion: 4,
@@ -58,22 +54,22 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: {
-        lang: 'nl',
-        ...(buildTarget === 'goeiekerels' ? { 'data-brand': 'goeiekerels' } : {})
+        lang: brand.htmlLang ?? 'nl',
+        ...(buildTarget !== 'default' ? { 'data-brand': buildTarget } : {})
       },
       meta: [
-        { name: 'apple-mobile-web-app-title', content: 'Toffe Kerels' },
+        { name: 'apple-mobile-web-app-title', content: brand.name },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:image', content: 'https://toffekerels.nl/og-image.png' },
+        { property: 'og:image', content: `${brand.url}/og-image.png` },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
-        { property: 'og:image:alt', content: 'Toffe Kerels – Showcase voor de tofste bedrijven' },
+        { property: 'og:image:alt', content: brand.ogImageAlt },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:image', content: 'https://toffekerels.nl/og-image.png' },
+        { name: 'twitter:image', content: `${brand.url}/og-image.png` },
       ],
       link: [
-        { rel: 'icon', type: 'image/svg+xml', href: buildTarget === 'goeiekerels' ? '/favicon-goeiekerels.svg' : '/favicon.svg' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
       ],
@@ -127,10 +123,10 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: 'https://toffekerels.nl',
-    name: 'Toffe Kerels',
-    description: 'Showcase voor de tofste bedrijven. Moderne websites voor lokale ondernemers.',
-    defaultLocale: 'nl'
+    url: brand.url,
+    name: brand.name,
+    description: brand.pwaDescription,
+    defaultLocale: brand.htmlLang ?? 'nl'
   },
 
   seo: {
@@ -140,11 +136,11 @@ export default defineNuxtConfig({
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
-      name: 'Toffe Kerels',
-      short_name: 'Toffe Kerels',
-      description: 'Showcase voor de tofste bedrijven in de regio.',
-      theme_color: '#0f172a',
-      background_color: '#0f172a',
+      name: brand.name,
+      short_name: brand.name,
+      description: brand.pwaDescription,
+      theme_color: brand.themeColor ?? '#0f172a',
+      background_color: brand.themeColor ?? '#0f172a',
       display: 'standalone',
       orientation: 'portrait',
       start_url: '/',
@@ -173,7 +169,7 @@ export default defineNuxtConfig({
       maximumFileSizeToCacheInBytes: 5000000,
       runtimeCaching: [
         {
-          urlPattern: /^https:\/\/toffekerels\.nl\/.*/i,
+          urlPattern: new RegExp(`^${brand.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\/.*`, 'i'),
           handler: 'NetworkFirst',
           options: {
             cacheName: 'pages-cache',
@@ -225,6 +221,23 @@ export default defineNuxtConfig({
 
   hooks: {
     'build:before': () => {
+      // Copy brand assets to public root
+      const brandAssetsDir = path.resolve(`public/brands/${buildTarget}`)
+      const fallbackDir = path.resolve('public/brands/default')
+      const publicDir = path.resolve('public')
+      const assets = ['favicon.svg', 'og-image.png', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png']
+
+      for (const asset of assets) {
+        const brandFile = path.join(brandAssetsDir, asset)
+        const fallbackFile = path.join(fallbackDir, asset)
+        const dest = path.join(publicDir, asset)
+        const source = fs.existsSync(brandFile) ? brandFile : fallbackFile
+        if (fs.existsSync(source)) {
+          fs.copyFileSync(source, dest)
+        }
+      }
+
+      // Generate media-list.json
       const mediaDir = path.resolve(process.cwd(), 'public/images/media')
       if (fs.existsSync(mediaDir)) {
         const files = fs.readdirSync(mediaDir)

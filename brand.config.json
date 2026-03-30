@@ -1,0 +1,20 @@
+{
+  "id": "toffekerels",
+  "name": "Toffe Kerels",
+  "url": "https://toffekerels.nl",
+  "logoText": "TOFFE",
+  "logoSpan": "KERELS",
+  "logoClass": "is-light has-orange",
+  "descriptionKey": "footer.description.toffekerels",
+  "email": "info@toffekerels.nl",
+  "phone": "0412-480038",
+  "address": "Raadhuislaan 2A, 5341GM Oss",
+  "location": "Nederland",
+  "copyright": "Toffe Kerels",
+  "htmlLang": "nl",
+  "themeColor": "#0f172a",
+  "pwaDescription": "Showcase voor de tofste bedrijven in de regio.",
+  "ogImageAlt": "Toffe Kerels – Showcase voor de tofste bedrijven",
+  "contentDir": "toffekerels",
+  "showcaseDir": "toffekerels-showcase"
+}

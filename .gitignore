@@ -1,5 +1,32 @@
+.DS_Store
 node_modules
 .nuxt
-.nuxt-goeiekerels
+.nuxt-*
 .data
 .output
+dist
+
+# Brand config — force-tracked per brand repo, excluded from base
+brand.config.json
+
+# Brand content — force-tracked per brand repo
+content/toffekerels/
+content/toffekerels-showcase/
+content/goeiekerels/
+content/goeiekerels-showcase/
+
+# Brand public assets — force-tracked per brand repo
+public/brands/toffekerels/
+public/brands/goeiekerels/
+
+# Root public assets are generated at build time from public/brands/{id}/
+public/favicon.svg
+public/og-image.png
+public/icon-192.png
+public/icon-512.png
+public/apple-touch-icon.png
+public/apple-touch-icon-precomposed.png
+
+# Brand-specific CSS and layout — force-tracked per brand repo
+app/assets/css/brand.css
+app/layouts/brand.vue

@@ -4,9 +4,9 @@
   "description": "Toffe Kerels Showcase Website",
   "type": "commonjs",
   "scripts": {
-    "prebuild": "npm run process-showcase && npm run process-showcase:goeiekerels",
+    "prebuild": "node scripts/prebuild-check.mjs && npm run process-showcase",
     "build": "nuxt build",
-    "pregenerate": "npm run process-showcase && npm run process-showcase:goeiekerels",
+    "pregenerate": "node scripts/prebuild-check.mjs && npm run process-showcase",
     "generate": "nuxt generate",
     "dev": "nuxt dev",
     "dev:app": "NUXT_PUBLIC_FORCE_APP_MODE=true nuxt dev",
@@ -15,12 +15,7 @@
     "generate-icons": "node generate-icons.mjs",
     "convert-images": "./convert-images.sh",
     "process-showcase": "./scripts/process-showcase-media.sh",
-    "build:goeiekerels": "NUXT_PUBLIC_BUILD_TARGET=goeiekerels NUXT_BUILD_DIR=.nuxt-goeiekerels nuxt build",
-    "dev:goeiekerels": "NUXT_PUBLIC_BUILD_TARGET=goeiekerels NUXT_BUILD_DIR=.nuxt-goeiekerels nuxt dev",
-    "generate:goeiekerels": "NUXT_PUBLIC_BUILD_TARGET=goeiekerels NUXT_BUILD_DIR=.nuxt-goeiekerels nuxt generate",
-    "process-showcase:goeiekerels": "BUILD_TARGET=goeiekerels ./scripts/process-showcase-media.sh",
-    "generate-hero": "./scripts/generate-hero-reel.sh",
-    "generate-hero:goeiekerels": "BUILD_TARGET=goeiekerels ./scripts/generate-hero-reel.sh"
+    "generate-hero": "./scripts/generate-hero-reel.sh"
   },
   "repository": {
     "type": "git",

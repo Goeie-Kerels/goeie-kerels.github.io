@@ -1,15 +1,9 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const localePath = useLocalePath()
-const { target, isGoeiekerels } = useBuildTarget()
-const config = useRuntimeConfig()
-const brand = computed(() => {
-  const brands = config.public.brands as Record<string, any>
-  return brands[target] ?? brands['default']
-})
-const contentCollection = target === 'default' ? 'content' : `${target}_content`
-const { data: navPages } = await useAsyncData(`footer-nav-links-${target}`, () =>
-  queryCollection(contentCollection as any)
+const { brand } = useBuildTarget()
+const { data: navPages } = await useAsyncData(`footer-nav-links-${brand.id}`, () =>
+  queryCollection('brand_content' as any)
     .where('nav', 'IS NOT NULL', '')
     .order('order', 'ASC')
     .select('path', 'nav', 'order')
@@ -18,7 +12,7 @@ const { data: navPages } = await useAsyncData(`footer-nav-links-${target}`, () =
 const navLinks = computed(() =>
   (navPages.value ?? []).map(p => ({
     name: p.nav as string,
-    path: p.path.replace('/' + target, '') || '/'
+    path: p.path.replace('/' + brand.contentDir, '') || '/'
   }))
 )
 </script>
@@ -27,17 +21,9 @@ const navLinks = computed(() =>
     <div class="container footer-grid">
       <div class="footer-col">
         <div class="footer-logo">
-          <template v-if="isGoeiekerels">
-            <span class="gk-logo footer-gk-logo">
-              <span class="gk-goeie">goeie</span>
-              <span class="gk-kerels">kerels</span>
-            </span>
-          </template>
-          <template v-else>
-            <h3 class="logo-brand" :class="brand.logoClass">{{ brand.logoText }}<span>{{ brand.logoSpan }}</span></h3>
-          </template>
+          <h3 class="logo-brand" :class="brand.logoClass">{{ brand.logoText }}<span>{{ brand.logoSpan }}</span></h3>
         </div>
-        <p>{{ t(brand.description) }}</p>
+        <p>{{ t(brand.descriptionKey) }}</p>
       </div>
       <div class="footer-col">
         <h4>{{ t('footer.navigation') }}</h4>

@@ -23,11 +23,11 @@ PUBLIC_DIR="$SCRIPT_DIR/../public"
 IMG_DIR="$PUBLIC_DIR/images/showcase"
 VID_DIR="$PUBLIC_DIR/videos/showcase"
 if [ "$BUILD_TARGET" = "default" ]; then
-  PLACEHOLDER_SRC="$SCRIPT_DIR/../content/showcase/toffekerels_showcase_placeholder.png"
+  PLACEHOLDER_SRC="$SCRIPT_DIR/../content/showcase/placeholder.png"
   PLACEHOLDER_OUT="$IMG_DIR/placeholder.jpg"
 else
   PLACEHOLDER_SRC="$SCRIPT_DIR/../content/${BUILD_TARGET}-showcase/placeholder.png"
-  PLACEHOLDER_OUT="$IMG_DIR/placeholder.png"
+  PLACEHOLDER_OUT="$IMG_DIR/placeholder.jpg"
 fi
 PLACEHOLDER_WIDTH=800
 SEEK="00:00:01"
@@ -152,11 +152,7 @@ find "$CONTENT_DIR" -name "index.md" | sort | while read -r mdfile; do
     new_image_path="/images/showcase/${slug}.jpg"
   else
     echo "  No local media found — will use placeholder fallback."
-    if [ "$BUILD_TARGET" = "default" ]; then
-      new_image_path="/images/showcase/placeholder.jpg"
-    else
-      new_image_path="/images/showcase/placeholder.png"
-    fi
+    new_image_path="/images/showcase/placeholder.jpg"
   fi
 
   # ── Update frontmatter ────────────────────────────────────────────────────

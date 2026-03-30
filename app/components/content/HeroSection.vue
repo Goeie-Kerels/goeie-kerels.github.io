@@ -8,7 +8,9 @@ const props = defineProps<{
   compact?: boolean
 }>()
 
-const REEL_COUNT = 15  // must match NUM_REELS in generate-hero-reel.sh
+const { isGoeiekerels } = useBuildTarget()
+const REEL_COUNT = isGoeiekerels ? 10 : 15  // must match NUM_REELS in generate-hero-reel.sh
+const REEL_BASE = isGoeiekerels ? '/videos/goeiekerels/hero-reel-' : '/videos/hero-reel-'
 
 // Initialise from props so SSR and first client render are identical — no hydration mismatch, no flash.
 // onMounted overrides activeVideo for reel-rotation pages only.
@@ -36,7 +38,7 @@ onMounted(() => {
   const current = parseInt(localStorage.getItem(key) ?? '-1', 10)
   const next = (current + 1) % REEL_COUNT
   localStorage.setItem(key, String(next))
-  const reelPath = `/videos/hero-reel-${next + 1}`
+  const reelPath = `${REEL_BASE}${next + 1}`
   activeVideo.value = reelPath
 
   // Changing <source> src attributes doesn't trigger a reload in browsers;

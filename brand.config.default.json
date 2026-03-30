@@ -1,0 +1,20 @@
+{
+  "id": "default",
+  "name": "Mijn Platform",
+  "url": "https://example.com",
+  "logoText": "MIJN",
+  "logoSpan": "PLATFORM",
+  "logoClass": "is-light has-gradient",
+  "descriptionKey": "footer.description.default",
+  "email": "info@example.com",
+  "phone": "",
+  "address": "",
+  "location": "Nederland",
+  "copyright": "Mijn Platform",
+  "htmlLang": "nl",
+  "themeColor": "#0f172a",
+  "pwaDescription": "Een showcase platform voor lokale ondernemers.",
+  "ogImageAlt": "Mijn Platform – Showcase",
+  "contentDir": "default",
+  "showcaseDir": "default-showcase"
+}
