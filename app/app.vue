@@ -1,11 +1,10 @@
 <script setup lang="ts">
-const { target: buildTarget } = useBuildTarget()
 </script>
 
 <template>
   <div class="app-container">
     <NuxtRouteAnnouncer />
-    <NuxtLayout :name="buildTarget">
+    <NuxtLayout name="default">
       <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
     </NuxtLayout>
   </div>

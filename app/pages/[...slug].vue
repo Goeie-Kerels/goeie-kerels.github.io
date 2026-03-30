@@ -24,6 +24,17 @@ const { data: page } = await useAsyncData(route.path, async () => {
   const showcasePath = toContentPath(route.path, brand.showcaseDir as string)
   const showcaseResult = await queryCollection(showcaseCollection as any).path(showcasePath).first()
   if (showcaseResult) return showcaseResult
+  // Try showcase with /showcase/ prefix stripped (locale switcher generates /showcase/{slug} from /en/showcase/{slug})
+  const strippedSlug = route.path.replace(/^\/showcase\//, '/')
+  if (strippedSlug !== route.path) {
+    const strippedShowcasePath = toContentPath(strippedSlug, brand.showcaseDir as string)
+    const strippedResult = await queryCollection(showcaseCollection as any).path(strippedShowcasePath).first()
+    if (strippedResult) return strippedResult
+    // Fallback: English-only showcase entries stored in brand_content under en/showcase/
+    const enFallbackPath = toContentPath(`/en/showcase${strippedSlug}`, contentDir)
+    const enFallback = await queryCollection(contentCollection as any).path(enFallbackPath).first()
+    if (enFallback) return enFallback
+  }
   if (locale.value !== defaultLocale.value) {
     const strippedPath = route.path.replace(new RegExp(`^/${locale.value}`), '') || '/'
     const fallbackPath = toContentPath(strippedPath, contentDir)
