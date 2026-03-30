@@ -201,7 +201,7 @@ echo "── Cleanup ───────────────────�
 
 # Collect valid slugs from ALL showcase content directories so we never
 # delete media that belongs to a different build target.
-all_valid_slugs=$(find "$SCRIPT_DIR/../content" -maxdepth 2 -name "index.md" \
+all_valid_slugs=$(find "$SCRIPT_DIR/../content" -maxdepth 3 -name "index.md" \
   | grep -E "/(showcase|[^/]+-showcase)/" \
   | xargs -I{} dirname {} \
   | xargs -I{} basename {})
