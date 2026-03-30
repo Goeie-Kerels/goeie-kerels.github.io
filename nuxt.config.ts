@@ -126,7 +126,10 @@ export default defineNuxtConfig({
     }
   },
 
-  // css is loaded per-layout so each build target can have its own stylesheet
+  css: [
+    '~/assets/css/main.css',
+    '~/assets/css/brand.css'
+  ],
 
   modules: [
     '@nuxt/content',
@@ -247,10 +250,6 @@ export default defineNuxtConfig({
     '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/images/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/fonts/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } }
-  },
-
-  experimental: {
-    inlineStyles: true
   },
 
   hooks: {
