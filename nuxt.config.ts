@@ -1,14 +1,52 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import fs from 'node:fs'
 import path from 'node:path'
+function getBuildTargetFromCname(): string {
+  try {
+    const cname = fs.readFileSync(path.resolve('./CNAME'), 'utf-8').trim()
+    const name = cname.split('.')[0]
+    return name || 'default'
+  } catch {
+    return 'default'
+  }
+}
 
+const buildTarget = process.env.NUXT_PUBLIC_BUILD_TARGET || getBuildTargetFromCname()
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2026-03-24',
+  buildDir: process.env.NUXT_BUILD_DIR || '.nuxt',
 
   runtimeConfig: {
     public: {
-      forceAppMode: false
+      forceAppMode: false,
+      buildTarget,
+      brands: {
+        default: {
+          name: 'Toffe Kerels',
+          logoText: 'TOFFE',
+          logoSpan: 'KERELS',
+          logoClass: 'is-light has-orange',
+          description: 'footer.description.default',
+          email: 'info@toffekerels.nl',
+          phone: '0412-480038',
+          address: 'Raadhuislaan 2A, 5341GM Oss',
+          location: 'Nederland',
+          copyright: 'Toffe Kerels'
+        },
+        goeiekerels: {
+          name: 'goeiekerels',
+          logoText: '',
+          logoSpan: '',
+          logoClass: '',
+          description: 'footer.description.goeiekerels',
+          email: 'info@goeiekerels.nl',
+          phone: '',
+          address: '',
+          location: 'Nederland',
+          copyright: 'goeiekerels'
+        }
+      }
     }
   },
   compatibilityVersion: 4,
@@ -19,7 +57,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: {
-        lang: 'nl'
+        lang: 'nl',
+        ...(buildTarget === 'goeiekerels' ? { 'data-brand': 'goeiekerels' } : {})
       },
       meta: [
         { name: 'apple-mobile-web-app-title', content: 'Toffe Kerels' },
@@ -33,7 +72,7 @@ export default defineNuxtConfig({
         { name: 'twitter:image', content: 'https://toffekerels.nl/og-image.png' },
       ],
       link: [
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', type: 'image/svg+xml', href: buildTarget === 'goeiekerels' ? '/favicon-goeiekerels.svg' : '/favicon.svg' },
         { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
       ],
@@ -56,7 +95,7 @@ export default defineNuxtConfig({
     }
   },
 
-  css: ['~/assets/css/main.css'],
+  // css is loaded per-layout so each build target can have its own stylesheet
 
   modules: [
     '@nuxt/content',

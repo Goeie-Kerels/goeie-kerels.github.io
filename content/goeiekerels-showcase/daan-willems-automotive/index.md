@@ -4,6 +4,7 @@ description: "Specialist in exclusieve occasions en persoonlijke service. Elke a
 image: "/images/showcase/daan-willems-automotive.jpg"
 video: "/videos/showcase/daan-willems-automotive.webm"
 type: "company"
+priority: true
 members: ["Daan Willems"]
 contact:
   email: "info@daanwillemsautomotive.nl"

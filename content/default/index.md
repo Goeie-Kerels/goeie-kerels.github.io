@@ -1,5 +1,7 @@
 ---
 title: "De tofste bedrijven in één overzicht"
+nav: "nav.home"
+order: 1
 description: "Wij laten zien wat lokale bedrijven in huis hebben. Van IT tot bouw, ontdek de Toffe Kerels."
 ---
 ::web-only
@@ -10,6 +12,10 @@ Ontdek de beste lokale ondernemers.
 ::
 
 :::showcase-header
+#title
+Onze [Leden]{.accent-text}
+#subtitle
+Een uniek mix van gedreven bedrijven en gepassioneerde personen.
 :::
 
 :::showcase-grid{home}

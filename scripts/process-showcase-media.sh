@@ -13,24 +13,38 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-CONTENT_DIR="$SCRIPT_DIR/../content/showcase"
+BUILD_TARGET="${BUILD_TARGET:-default}"
+if [ "$BUILD_TARGET" = "default" ]; then
+  CONTENT_DIR="$SCRIPT_DIR/../content/showcase"
+else
+  CONTENT_DIR="$SCRIPT_DIR/../content/${BUILD_TARGET}-showcase"
+fi
 PUBLIC_DIR="$SCRIPT_DIR/../public"
 IMG_DIR="$PUBLIC_DIR/images/showcase"
 VID_DIR="$PUBLIC_DIR/videos/showcase"
-PLACEHOLDER_SRC="$CONTENT_DIR/toffekerels_showcase_placeholder.png"
-PLACEHOLDER_OUT="$IMG_DIR/placeholder.jpg"
+if [ "$BUILD_TARGET" = "default" ]; then
+  PLACEHOLDER_SRC="$SCRIPT_DIR/../content/showcase/toffekerels_showcase_placeholder.png"
+  PLACEHOLDER_OUT="$IMG_DIR/placeholder.jpg"
+else
+  PLACEHOLDER_SRC="$SCRIPT_DIR/../content/${BUILD_TARGET}-showcase/placeholder.png"
+  PLACEHOLDER_OUT="$IMG_DIR/placeholder.png"
+fi
 PLACEHOLDER_WIDTH=800
 SEEK="00:00:01"
 
 mkdir -p "$IMG_DIR" "$VID_DIR"
 
 # ── 1. Render placeholder once ───────────────────────────────────────────────
-if [ ! -f "$PLACEHOLDER_OUT" ]; then
-  echo "PLACEHOLDER → rendering $PLACEHOLDER_OUT"
-  magick "$PLACEHOLDER_SRC" -resize "${PLACEHOLDER_WIDTH}x>" -quality 85 "$PLACEHOLDER_OUT"
-  echo "  OK: $(du -sh "$PLACEHOLDER_OUT" | cut -f1)"
+if [ -f "$PLACEHOLDER_SRC" ]; then
+  if [ ! -f "$PLACEHOLDER_OUT" ]; then
+    echo "PLACEHOLDER → rendering $PLACEHOLDER_OUT"
+    magick "$PLACEHOLDER_SRC" -resize "${PLACEHOLDER_WIDTH}x>" -quality 85 "$PLACEHOLDER_OUT"
+    echo "  OK: $(du -sh "$PLACEHOLDER_OUT" | cut -f1)"
+  else
+    echo "PLACEHOLDER already rendered, skipping."
+  fi
 else
-  echo "PLACEHOLDER already rendered, skipping."
+  echo "PLACEHOLDER source not found, skipping: $PLACEHOLDER_SRC"
 fi
 
 # ── 2. Process each showcase entry ───────────────────────────────────────────
@@ -129,11 +143,10 @@ find "$CONTENT_DIR" -name "index.md" | sort | while read -r mdfile; do
     new_image_path="/images/showcase/${slug}.jpg"
   else
     echo "  No local media found — will use placeholder fallback."
-    # If frontmatter has a stale image path, replace it with the placeholder
-    cur_image=$(grep "^image:" "$mdfile" | head -1 | sed 's/^image: *//;s/^"//;s/"$//' || true)
-    if [ -n "$cur_image" ] && [ "$cur_image" != "/images/showcase/placeholder.jpg" ]; then
-      sed -i '' "s|image: \"$cur_image\"|image: \"/images/showcase/placeholder.jpg\"|" "$mdfile"
-      echo "  Frontmatter: replaced stale image with placeholder"
+    if [ "$BUILD_TARGET" = "default" ]; then
+      new_image_path="/images/showcase/placeholder.jpg"
+    else
+      new_image_path="/images/showcase/placeholder.png"
     fi
   fi
 
@@ -182,18 +195,23 @@ vertical: true
 
 done
 
-# ── 3. Cleanup: remove public media whose slug no longer exists ───────────────
+# ── 3. Cleanup: remove public media whose slug no longer exists in ANY target ──
 echo ""
 echo "── Cleanup ──────────────────────────────────────────"
 
-valid_slugs=$(find "$CONTENT_DIR" -name "index.md" -exec dirname {} \; | xargs -I{} basename {})
+# Collect valid slugs from ALL showcase content directories so we never
+# delete media that belongs to a different build target.
+all_valid_slugs=$(find "$SCRIPT_DIR/../content" -maxdepth 2 -name "index.md" \
+  | grep -E "/(showcase|[^/]+-showcase)/" \
+  | xargs -I{} dirname {} \
+  | xargs -I{} basename {})
 
 for f in "$IMG_DIR"/*.jpg "$IMG_DIR"/*.webp; do
   [ -f "$f" ] || continue
   fname=$(basename "$f")
   base="${fname%.*}"
   [ "$base" = "placeholder" ] && continue
-  if ! echo "$valid_slugs" | grep -qx "$base"; then
+  if ! echo "$all_valid_slugs" | grep -qx "$base"; then
     echo "  REMOVE stale image: $f"
     rm "$f"
   fi
@@ -203,7 +221,7 @@ for f in "$VID_DIR"/*; do
   [ -f "$f" ] || continue
   fname=$(basename "$f")
   base="${fname%.*}"
-  if ! echo "$valid_slugs" | grep -qx "$base"; then
+  if ! echo "$all_valid_slugs" | grep -qx "$base"; then
     echo "  REMOVE stale video: $f"
     rm "$f"
   fi

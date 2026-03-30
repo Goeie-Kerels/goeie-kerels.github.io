@@ -180,7 +180,10 @@
     "submit": "Send via email"
   },
   "footer": {
-    "description": "Showcase for the coolest companies in the region. We build modern applications that stand out.",
+    "description": {
+      "default": "Showcase for the coolest companies in the region. We build modern applications that stand out.",
+      "goeiekerels": "A personal initiative by Daan Willems — putting his best friends and their businesses in the spotlight."
+    },
     "navigation": "Navigation",
     "contact": "Contact",
     "address": "Raadhuislaan 2A, 5341GM Oss",

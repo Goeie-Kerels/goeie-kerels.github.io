@@ -3,11 +3,10 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const { locale } = useI18n()
 const t = (nl: string, en: string) => locale.value === 'en' ? en : nl
-
-const { data: allItems } = await useAsyncData('contact-directory', () => {
-  return queryCollection('content')
-    .where('path', 'LIKE', '/showcase/%')
-    .where('path', 'NOT LIKE', '/en/%')
+const { target } = useBuildTarget()
+const showcaseCollection = target === 'default' ? 'showcase' : `${target}_showcase`
+const { data: allItems } = await useAsyncData(`contact-directory-${target}`, () => {
+  return queryCollection(showcaseCollection as any)
     .where('hidden', '<>', true)
     .all()
 })

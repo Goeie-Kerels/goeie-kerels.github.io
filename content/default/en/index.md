@@ -10,6 +10,10 @@ Discover the best local entrepreneurs.
 ::
 
 :::showcase-header
+#title
+Our [Members]{.accent-text}
+#subtitle
+A unique mix of driven companies and passionate individuals.
 :::
 
 :::showcase-grid{home}

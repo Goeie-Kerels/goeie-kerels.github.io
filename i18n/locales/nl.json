@@ -180,7 +180,10 @@
     "submit": "Verstuur via e-mail"
   },
   "footer": {
-    "description": "Showcase voor de tofste bedrijven in de regio. Wij bouwen moderne applicaties die opvallen.",
+    "description": {
+      "default": "Showcase voor de tofste bedrijven in de regio. Wij bouwen moderne applicaties die opvallen.",
+      "goeiekerels": "Een persoonlijk initiatief van Daan Willems — zijn beste vrienden en hun bedrijven in het zonnetje."
+    },
     "navigation": "Navigatie",
     "contact": "Contactgegevens",
     "address": "Raadhuislaan 2A, 5341GM Oss",
