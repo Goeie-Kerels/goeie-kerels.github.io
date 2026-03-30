@@ -4,7 +4,7 @@
       <NuxtLink 
         :to="localePath('/')" 
         class="logo-brand"
-        :class="props.logoClass ?? 'has-gradient'"
+        :class="props.logoClass ?? brand.logoClass ?? 'has-gradient'"
       >
         <slot name="logo">
           {{ brand.logoText }}<span>{{ brand.logoSpan }}</span>
