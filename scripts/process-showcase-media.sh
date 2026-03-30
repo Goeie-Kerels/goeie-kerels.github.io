@@ -13,22 +13,19 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-BUILD_TARGET="${BUILD_TARGET:-default}"
-if [ "$BUILD_TARGET" = "default" ]; then
-  CONTENT_DIR="$SCRIPT_DIR/../content/showcase"
-else
-  CONTENT_DIR="$SCRIPT_DIR/../content/${BUILD_TARGET}-showcase"
-fi
-PUBLIC_DIR="$SCRIPT_DIR/../public"
+ROOT_DIR="$SCRIPT_DIR/.."
+
+# Read showcaseDir from brand.config.json, fall back to brand.config.default.json
+_brand_config="$ROOT_DIR/brand.config.json"
+[ ! -f "$_brand_config" ] && _brand_config="$ROOT_DIR/brand.config.default.json"
+SHOWCASE_DIR_NAME="$(node -e "try{const b=JSON.parse(require('fs').readFileSync('$_brand_config','utf8'));process.stdout.write(b.showcaseDir||'default-showcase')}catch(e){process.stdout.write('default-showcase')}")"
+
+CONTENT_DIR="$ROOT_DIR/content/$SHOWCASE_DIR_NAME"
+PUBLIC_DIR="$ROOT_DIR/public"
 IMG_DIR="$PUBLIC_DIR/images/showcase"
 VID_DIR="$PUBLIC_DIR/videos/showcase"
-if [ "$BUILD_TARGET" = "default" ]; then
-  PLACEHOLDER_SRC="$SCRIPT_DIR/../content/showcase/placeholder.png"
-  PLACEHOLDER_OUT="$IMG_DIR/placeholder.jpg"
-else
-  PLACEHOLDER_SRC="$SCRIPT_DIR/../content/${BUILD_TARGET}-showcase/placeholder.png"
-  PLACEHOLDER_OUT="$IMG_DIR/placeholder.jpg"
-fi
+PLACEHOLDER_SRC="$CONTENT_DIR/placeholder.png"
+PLACEHOLDER_OUT="$IMG_DIR/placeholder.jpg"
 PLACEHOLDER_WIDTH=800
 SEEK="00:00:01"
 
